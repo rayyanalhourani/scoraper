@@ -1,0 +1,15 @@
+{
+    "name": "rayyan/server",
+    "autoload": {
+        "psr-4": {
+            "Rayyan\\Server\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rayyanalhourani",
+            "email": "rayyan.alhourani02@gmail.com"
+        }
+    ],
+    "require": {}
+}
