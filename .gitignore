@@ -1,1 +1,4 @@
-chatbot/venv/
+/server/vendor
+/chatbot/venv/
+/server/composer.phar
+/server/composer.lock
