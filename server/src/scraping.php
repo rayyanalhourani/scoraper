@@ -5,7 +5,6 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverWait;
-use Facebook\WebDriver\Exception\NoSuchElementException;
 
 try {
     $host = 'http://10.123.41.244:4444/';
@@ -25,6 +24,7 @@ try {
     $date = $MainContainer->findElement(WebDriverBy::xpath('./header/div/h3'))->getText();
 
     $allLeagues = $MainContainer->findElements(WebDriverBy::xpath('./div'));
+    $all=[];
     foreach ($allLeagues as $leagues) {
         $leagueParts = $leagues->findElements(WebDriverBy::xpath('./section'));
 
@@ -32,6 +32,8 @@ try {
             $leagueName = $league->findElement(WebDriverBy::xpath('./header'))->getText();
             $matches = $league->findElements(WebDriverBy::xpath('./div/section'));
             foreach ($matches as $match) {
+                $matchDetails=[];
+
                 $gameDetails = $match->findElements(WebDriverBy::xpath('./div'))[0];
                 $gameDetails = $gameDetails->findElements(WebDriverBy::xpath('./div/div'));
 
@@ -47,12 +49,16 @@ try {
                     $city = $divs[1]->getText();
                 }
 
-
                 $matchTimeOrStatus = $teamsDetails->findElement(WebDriverBy::xpath('./div/div/div'))->getText();
 
-                $teams = $teamsDetails->findElements(WebDriverBy::xpath('./div/div/ul/li'));
+                $matchDetails["stadium"]=$stadium;
+                $matchDetails["city"]=$city;
+                $matchDetails["TimeOrStatus"]=$matchTimeOrStatus;
+                $matchDetails["teams"]=[];
 
+                $teams = $teamsDetails->findElements(WebDriverBy::xpath('./div/div/ul/li'));
                 foreach ($teams as $team) {
+                    $teamDetails=[];
                     $name = $team->findElement(WebDriverBy::xpath('./div/div'))->getText();
 
                     $imgs = $team->findElements(WebDriverBy::xpath('./a/img'));
@@ -66,10 +72,20 @@ try {
                     if (sizeof($divs) == 3) {
                         $score = $divs[2]->getText();
                     }
+
+                    $teamDetails["name"]=$name;
+                    $teamDetails["img"]=$img;
+                    $teamDetails["score"]=$score;
+
+                    $matchDetails["teams"][]=$teamDetails;
                 }
+                $all[$leagueName][]=$matchDetails;
             }
         }
     }
+    echo "<pre>";
+    var_dump($all);
+    echo "</pre>";
 
     $driver->close();
 } catch (Exception $e) {
