@@ -35,7 +35,12 @@ try {
         foreach ($matches as $match) {
             $match = $match->findElements(WebDriverBy::xpath('./div/div/div'));
             $teamsDetails = $match[0];
-            $placeDetails = $match[1];
+            $placeDetails = $match[1]; // ./
+
+            $divs = $placeDetails->findElements(WebDriverBy::xpath('./div/div/div/div'));
+
+            $stadium=$divs[0]->getText();
+            $city=$divs[1]->getText();
 
             $matchTimeOrStatus = $teamsDetails->findElement(WebDriverBy::xpath('./div/div/div'))->getText();
 
@@ -44,29 +49,21 @@ try {
             foreach ($teams as $team) {
                 $name = $team->findElement(WebDriverBy::xpath('./div/div'))->getText();
 
-                try {
-                    $img = $team->findElement(WebDriverBy::xpath('./a/img'))->getAttribute("src");
-                } catch (NoSuchElementException $e) {
-                    $img = null;
+                $imgs = $team->findElements(WebDriverBy::xpath('./a/img'));
+                $img = null;
+                if (sizeof($imgs) > 0) {
+                    $img = $imgs[0]->getAttribute("src");
                 }
-
 
                 $divs = $team->findElements(WebDriverBy::xpath('./div'));
-                
-                $score="-";
-                if(sizeof($divs)==3){
-                    $score=$divs[2]->getText();
+                $score = "-";
+                if (sizeof($divs) == 3) {
+                    $score = $divs[2]->getText();
                 }
-
-                echo "$name $score <br>";
             }
         }
     }
 
-    // echo $matchTimeOrStatus."<br>";
-    // echo "<pre>";
-    // var_dump($allMatches->getText());
-    // echo "</pre>";
 } catch (Exception $e) {
     echo $e->getMessage();
 }
