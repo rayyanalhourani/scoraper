@@ -38,6 +38,9 @@ function getScores(int $year, int $month, int $day)
             $matches = $league->findElements(WebDriverBy::xpath('./div/section'));
 
             foreach ($matches as $match) {
+                $matchDetails=[];
+                $matchDetails["date"] = $date;
+
                 $gameDetails = $match->findElements(WebDriverBy::xpath('./div'))[0]
                     ->findElements(WebDriverBy::xpath('./div/div'));
 
@@ -48,7 +51,6 @@ function getScores(int $year, int $month, int $day)
                 extractTimeOrStates($teamsDetails, $matchDetails);
                 extractTeamsDetails($teamsDetails, $matchDetails);
 
-                $matchDetails["date"] = $date;
                 $allScores[$leagueName][] = $matchDetails;
             }
         }
