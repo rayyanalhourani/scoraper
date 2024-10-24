@@ -10,5 +10,6 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Rayyan\\Server\\' => array($baseDir . '/src'),
+    'Predis\\' => array($vendorDir . '/predis/predis/src'),
     'Facebook\\WebDriver\\' => array($vendorDir . '/php-webdriver/webdriver/lib'),
 );

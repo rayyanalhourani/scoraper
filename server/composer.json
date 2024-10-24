@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": "^7.4",
-        "php-webdriver/webdriver": "^1.15"
+        "php-webdriver/webdriver": "^1.15",
+        "predis/predis": "^2.2"
     }
 }

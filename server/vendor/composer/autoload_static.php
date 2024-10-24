@@ -23,6 +23,10 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         array (
             'Rayyan\\Server\\' => 14,
         ),
+        'P' => 
+        array (
+            'Predis\\' => 7,
+        ),
         'F' => 
         array (
             'Facebook\\WebDriver\\' => 19,
@@ -45,6 +49,10 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         'Rayyan\\Server\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
         ),
         'Facebook\\WebDriver\\' => 
         array (
