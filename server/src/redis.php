@@ -46,14 +46,17 @@ function findKeysByPattern($pattern)
     return $redis->keys($pattern);
 }
 
-function findByKey($keys)
+function findByKey($key)
 {
     global $redis;
-    $results = []; 
+    return $redis->hGetAll($key);
+}
 
+function findAllByKeys($keys)
+{
+    $results = [];
     foreach ($keys as $key) {
-        $results[$key] = $redis->hGetAll($key);
+        $results[$key] = findByKey($key);
     }
-
     return $results;
 }

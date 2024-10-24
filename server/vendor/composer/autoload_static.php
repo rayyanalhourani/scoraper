@@ -9,6 +9,7 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '0f5c2e42cd57cee173a4e5751046ee6b' => __DIR__ . '/..' . '/openswoole/core/src/Coroutine/functions.php',
         '2a3c2110e8e0295330dc3d11a4cbc4cb' => __DIR__ . '/..' . '/php-webdriver/webdriver/lib/Exception/TimeoutException.php',
     );
 
@@ -25,7 +26,13 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         ),
         'P' => 
         array (
+            'Psr\\Http\\Server\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
             'Predis\\' => 7,
+        ),
+        'O' => 
+        array (
+            'OpenSwoole\\Core\\' => 16,
         ),
         'F' => 
         array (
@@ -50,9 +57,22 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
+        'Psr\\Http\\Server\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-server-handler/src',
+            1 => __DIR__ . '/..' . '/psr/http-server-middleware/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
+        'OpenSwoole\\Core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/openswoole/core/src',
         ),
         'Facebook\\WebDriver\\' => 
         array (

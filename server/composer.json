@@ -14,6 +14,10 @@
     "require": {
         "php": "^7.4",
         "php-webdriver/webdriver": "^1.15",
-        "predis/predis": "^2.2"
+        "predis/predis": "^2.2",
+        "openswoole/core": "22.1.5"
+    },
+    "require-dev": {
+        "openswoole/ide-helper": "^22.1"
     }
 }
