@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Services;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -22,7 +22,9 @@ class Scraping
 
             $this->driver = RemoteWebDriver::create($host, $capabilities);
             $this->driver->manage()->window()->maximize();
+            error_log("Connected to Selenuim server.");
         } catch (Exception $e) {
+            error_log("unable to Connected to Selenuim server.");
             echo $e->getMessage();
         }
     }
@@ -30,10 +32,8 @@ class Scraping
 
     public function getScores(int $year, int $month, int $day)
     {
-        global $driver;
-
-        $driver->get("https://www.espn.in/football/scoreboard/_/date/$year$month$day");
-        $MainContainer = $driver->findElement(WebDriverBy::xpath('//*[@role="main"]/div/div'));
+        $this->driver->get("https://www.espn.in/football/scoreboard/_/date/$year$month$day");
+        $MainContainer = $this->driver->findElement(WebDriverBy::xpath('//*[@role="main"]/div/div'));
 
         $date = $MainContainer->findElement(WebDriverBy::xpath('./header/div/h3'))->getText();
         $allLeagues = $MainContainer->findElements(WebDriverBy::xpath('./div'));

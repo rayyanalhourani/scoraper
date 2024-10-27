@@ -1,8 +1,7 @@
 <?php
 
-namespace Service;
+namespace Services;
 use Predis\Client;
-
 
 class Redis
 {
@@ -25,8 +24,6 @@ class Redis
 
     function storeAllScores($scores, $date)
     {
-        global $redis;
-
         foreach ($scores as $leagueName => $matches) {
             foreach ($matches as $match) {
                 $team1 = $match['teams'][0]['name'];
@@ -34,7 +31,7 @@ class Redis
 
                 $key = "$date:$leagueName:$team1:$team2";
 
-                $redis->hMSet($key, [
+                $this->redis->hMSet($key, [
                     'date' => $match['date'],
                     'stadium' => $match['stadium'],
                     'city' => $match['city'],
@@ -48,14 +45,12 @@ class Redis
 
     function findKeysByPattern($pattern)
     {
-        global $redis;
-        return $redis->keys($pattern);
+        return $this->redis->keys($pattern);
     }
 
     function findByKey($key)
     {
-        global $redis;
-        return $redis->hGetAll($key);
+        return $this->redis->hGetAll($key);
     }
 
     function findAllByKeys($keys)

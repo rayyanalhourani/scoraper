@@ -1,16 +1,20 @@
-<?php 
+<?php
 
 use OpenSwoole\WebSocket\{Frame, Server};
 use OpenSwoole\Constant;
 use OpenSwoole\Http\Request;
 use OpenSwoole\Table;
 
-$server = new Server("127.0.0.1", 8085, Server::SIMPLE_MODE, Constant::SOCK_TCP);
+use Services\App;
+use Services\Redis;
+
+$redis = App::resolve(Redis::class);
+
+$server = new Server("localhost", 8085, Server::SIMPLE_MODE, Constant::SOCK_TCP);
 
 $fds = new Table(1024);
 $fds->column('fd', Table::TYPE_INT, 4);
 $fds->column('name', Table::TYPE_STRING, 16);
-$fds->column('poll_id', Table::TYPE_STRING, 4);
 $fds->create();
 
 $server->on("Start", function (Server $server) {
@@ -24,19 +28,17 @@ $server->on('Open', function (Server $server, Request $request) use ($fds) {
         'fd' => $fd,
         'name' => sprintf($clientName)
     ]);
+    $server->push($fd, "Welcome {$clientName}");
     echo "Connection <{$fd}> open by {$clientName}. Total connections: " . $fds->count() . "\n";
-    foreach ($fds as $key => $value) {
-        if ($key == $fd) {
-            $server->push($request->fd, "Welcome {$clientName}, there are " . $fds->count() . " connections");
-        } else {
-            $server->push($key, "A new client ({$clientName}) is joining to the party");
-        }
-    }
 });
 
 $server->on('Message', function (Server $server, Frame $frame) use ($fds) {
-    $data = json_decode($frame->data, true);
+    $date = $frame->data;
 
+    if (!preg_match('/^\d{8}$/', $date)) {
+        $server->push($frame->fd, "Invalid input.");
+        return;
+    }
 });
 
 $server->on('Close', function (Server $server, int $fd) use ($fds) {
@@ -50,3 +52,7 @@ $server->on('Disconnect', function (Server $server, int $fd) use ($fds) {
 });
 
 $server->start();
+
+function checkDate($date){
+
+}

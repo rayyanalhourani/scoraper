@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <input type="date" id="input" />
+      <button type="submit" onclick="submit()">submit</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  let socketServer;
+  const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
+
+  window.onload = function () {
+    socketServer = new WebSocket("ws://127.0.0.1:8085");
+
+    socketServer.onmessage = function (event) {
+      let data = event.data;
+
+      if (!isJson(data)) {
+        console.log(data);
+        return;
+      }
+
+      let response = JSON.parse(data);
+    };
+
+    socketServer.onopen = function () {
+      console.log("Connected to WebSocket!");
+    };
+
+    socketServer.onclose = function () {
+      console.log("Connection closed");
+    };
+
+    socketServer.onerror = function () {
+      console.log("Error happens");
+    };
+
+    function sendMessage(msg) {
+      socketServer.send(JSON.stringify(msg));
+    }
+
+    function isJson(str) {
+      try {
+        JSON.parse(str);
+      } catch (e) {
+        return false;
+      }
+      return true;
+    }
+  };
+
+  function submit() {
+    let input = document.getElementById("input").value;
+    const date = input.replace(/-/g, "");
+    socketServer.send(date);
+  }
+</script>

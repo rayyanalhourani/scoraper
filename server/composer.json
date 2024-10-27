@@ -2,7 +2,8 @@
     "name": "rayyan/server",
     "autoload": {
         "psr-4": {
-            "Rayyan\\Server\\": "src/"
+            "Src\\": "src/",
+            "Services\\":"src/services/"
         }
     },
     "authors": [

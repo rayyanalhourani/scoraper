@@ -1,6 +1,10 @@
 <?php
 
 require "vendor/autoload.php";
-require "src/scraping.php";
-require "src/redis.php";
+require "bootstrap.php";
 
+
+
+
+//$redis->
+//require "src/socket.php";

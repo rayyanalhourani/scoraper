@@ -19,10 +19,8 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Process\\' => 26,
-        ),
-        'R' => 
-        array (
-            'Rayyan\\Server\\' => 14,
+            'Src\\' => 4,
+            'Services\\' => 9,
         ),
         'P' => 
         array (
@@ -53,9 +51,13 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
         ),
-        'Rayyan\\Server\\' => 
+        'Src\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Services\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/services',
         ),
         'Psr\\Http\\Server\\' => 
         array (
