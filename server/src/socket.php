@@ -8,6 +8,9 @@ use Services\App;
 use Services\Redis;
 use Services\Scraping;
 
+$redis = App::resolve(Redis::class);
+$scraping = App::resolve(Scraping::class);
+
 $server = new Server("localhost", 8085, Server::SIMPLE_MODE, Constant::SOCK_TCP);
 
 $fds = new Table(1024);
@@ -74,7 +77,7 @@ $server->start();
 
 function checkTheDate($date)
 {
-    $redis = App::resolve(Redis::class);
+    global $redis;
     $key = "date:$date";
 
     if ($redis->exists($key)) {
@@ -86,9 +89,7 @@ function checkTheDate($date)
 
 function getResult($date)
 {
-    $redis = App::resolve(Redis::class);
-    $scraping = App::resolve(Scraping::class);
-
+    global $redis,$scraping;
     checkTheDate($date);
 
     $key = "date:$date";
@@ -103,7 +104,7 @@ function getResult($date)
 
 function disconnectDate($date)
 {
-    $redis = App::resolve(Redis::class);
+    global $redis;
     $key = "date:$date";
     $redis->decr($key);
 }
