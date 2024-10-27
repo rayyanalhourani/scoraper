@@ -1,5 +1,6 @@
 <?php
 
+namespace Service;
 use Predis\Client;
 
 
@@ -10,9 +11,9 @@ class Redis
     public function __construct($scheme, $host, $port)
     {
         $this->redis = new Client([
-            'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
-            'port'   => 6379,
+            'scheme' => $scheme,
+            'host'   => $host,
+            'port'   => $port,
         ]);
 
         if ($this->redis->ping()) {

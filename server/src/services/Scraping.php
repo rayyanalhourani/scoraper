@@ -1,9 +1,12 @@
 <?php
 
+namespace Service;
+
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\WebDriverBy;
+use Exception;
 
 class Scraping
 {
@@ -12,7 +15,6 @@ class Scraping
     public function __construct($host)
     {
         try {
-            $host = 'http://10.123.41.244:4444/';
             $capabilities = DesiredCapabilities::chrome();
             $chromeOptions = new ChromeOptions();
             $chromeOptions->addArguments(['--headless']); // <- comment out for testing
