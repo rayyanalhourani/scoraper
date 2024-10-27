@@ -2,9 +2,4 @@
 
 require "vendor/autoload.php";
 require "bootstrap.php";
-
-
-
-
-//$redis->
-//require "src/socket.php";
+require "src/socket.php";

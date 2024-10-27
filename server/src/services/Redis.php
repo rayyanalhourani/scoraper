@@ -43,6 +43,13 @@ class Redis
         }
     }
 
+    public function getAllScores($date)
+    {
+        $pattern = "$date:*";
+        $keys = $this->findKeysByPattern($pattern);
+        return $this->findAllByKeys($keys);
+    }
+
     function findKeysByPattern($pattern)
     {
         return $this->redis->keys($pattern);
@@ -60,5 +67,30 @@ class Redis
             $results[$key] = $this->findByKey($key);
         }
         return $results;
+    }
+
+    function get($key)
+    {
+        return $this->redis->get($key);
+    }
+
+    function set($key,$value)
+    {
+        return $this->redis->set($key,$value);
+    }
+
+    function exists($key)
+    {
+        return $this->redis->exists($key);
+    }
+
+    function incr($key)
+    {
+        return $this->redis->incr($key);
+    }
+
+    function decr($key)
+    {
+        return $this->redis->decr($key);
     }
 }

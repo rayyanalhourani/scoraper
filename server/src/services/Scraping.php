@@ -30,9 +30,9 @@ class Scraping
     }
 
 
-    public function getScores(int $year, int $month, int $day)
+    public function getScores($date)
     {
-        $this->driver->get("https://www.espn.in/football/scoreboard/_/date/$year$month$day");
+        $this->driver->get("https://www.espn.in/football/scoreboard/_/date/$date");
         $MainContainer = $this->driver->findElement(WebDriverBy::xpath('//*[@role="main"]/div/div'));
 
         $date = $MainContainer->findElement(WebDriverBy::xpath('./header/div/h3'))->getText();
