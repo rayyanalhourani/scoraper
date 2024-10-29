@@ -73,7 +73,7 @@ $server->on('Disconnect', function (Server $server, int $fd) use ($fds) {
     echo "Disconnect: {$fd}, total connections: " . $fds->count() . "\n";
 });
 
-$server->tick(5000, function () use ($fds, $redis,$server) {
+$server->tick(5000, function () use ($fds, $redis, $server) {
     $keys = $redis->findKeysByPattern("date:*");
 
     $current_time = new DateTime();
@@ -82,9 +82,9 @@ $server->tick(5000, function () use ($fds, $redis,$server) {
     foreach ($keys as $key) {
         $date = substr($key, 5);
 
-        if ($date >= $current_date && $redis->get("users:$date")>0) {
+        if ($date >= $current_date && $redis->get("users:$date") > 0) {
             $time_string = $redis->get("time:$date");
-            
+
             $event_time = DateTime::createFromFormat('H:i', $time_string);
 
             $diff = $current_time->diff($event_time);
@@ -92,17 +92,10 @@ $server->tick(5000, function () use ($fds, $redis,$server) {
 
             if ($minutes_diff >= 5) {
                 storeInCache($date);
-
-                $fdList=$fds->get("date",$date);
-                $result = $redis->getAllScores($date);
-                foreach($fdList as $fd){
-                    $result = json_encode($result);
-                    $server->push($fd, $result);
-                }
             }
         }
     }
-});      
+});
 
 $server->start();
 
@@ -110,7 +103,7 @@ function getResult($date)
 {
     global $redis;
 
-    if(!$redis->exists("date:$date")){
+    if (!$redis->exists("date:$date")) {
         storeInCache($date);
     }
 
@@ -143,13 +136,14 @@ function disconnectUser($date)
     $redis->decr($key);
 }
 
-function storeInCache($date){
+function storeInCache($date)
+{
     global $redis, $scraping;
 
     $current_time = (new DateTime())->format('H:i');
 
-    $results=$scraping->getScores($date);
-    $redis->set("date:$date",1);
-    $redis->set("time:$date",$current_time);
-    $redis->storeAllScores($results,$date);
+    $results = $scraping->getScores($date);
+    $redis->set("date:$date", 1);
+    $redis->set("time:$date", $current_time);
+    $redis->storeAllScores($results, $date);
 }
