@@ -31,7 +31,7 @@ $this->title = "Scores";
     </div>
 
     <div id="allMatches">
-      
+
     </div>
 </div>
 
@@ -110,20 +110,13 @@ $this->title = "Scores";
             matchesContainer.className = "d-flex justify-content-around align-items-center";
 
             matchesData[leagueName].forEach(match => {
-                let team1 = JSON.parse(match.team1);
-                let team2 = JSON.parse(match.team2);
-                let city = match.city;
-                let stadium = match.stadium;
-                let status = match.status;
-
-                matchesContainer.appendChild(getMatch(team1, team2, status, stadium, city));
+                matchesContainer.appendChild(getMatch(match));
             });
 
             leagueContainer.appendChild(matchesContainer);
             allMatchesContainer.appendChild(leagueContainer);
         }
     }
-
 
     function getBanner(leagueName) {
         const bannerDiv = document.createElement('div');
@@ -134,32 +127,33 @@ $this->title = "Scores";
         title.textContent = leagueName;
 
         bannerDiv.appendChild(title);
-
         return bannerDiv;
     }
 
-    function getMatch(team1, team2, timeOrStatus, stadium, city) {
+    function getMatch(match) {
+        const team1 = JSON.parse(match.team1),
+            team2 = JSON.parse(match.team2);
+
         const matchDiv = document.createElement('div');
         matchDiv.className = 'border border-2 p-3 shadow rounded';
         matchDiv.style.width = '480px';
-        matchDiv.style.height = '350px';
+        matchDiv.style.minHeight = '300px';
 
         const teamScoreDiv = document.createElement('div');
         teamScoreDiv.className = 'd-flex justify-content-between';
 
         const team1Div = createTeamElement(team1);
+        const team2Div = createTeamElement(team2);
 
         const statusDiv = document.createElement('div');
         statusDiv.className = 'mt-5';
         statusDiv.innerHTML = `
-        <p class="text-muted fs-4">${timeOrStatus}</p>
+        <p class="text-muted fs-4">${match.status}</p>
         <div class="d-flex align-items-center justify-content-between mt-4 fs-2 fw-bold text-dark">
             <p>${team1.score}</p>
             <p class="text-muted">:</p>
             <p>${team2.score}</p>
         </div>`;
-
-        const team2Div = createTeamElement(team2);
 
         teamScoreDiv.appendChild(team1Div);
         teamScoreDiv.appendChild(statusDiv);
@@ -169,8 +163,8 @@ $this->title = "Scores";
         locationDiv.className = 'd-flex flex-column align-items-center justify-content-center mt-4';
         locationDiv.style.height = '3.5rem';
         locationDiv.innerHTML = `
-        <p class="text-secondary fw-medium">${stadium}</p>
-        <p class="text-muted small">${city}</p>`;
+        <p class="text-secondary fw-medium">${match.stadium}</p>
+        <p class="text-muted small">${match.city}</p>`;
 
         matchDiv.appendChild(teamScoreDiv);
         matchDiv.appendChild(locationDiv);
@@ -186,8 +180,8 @@ $this->title = "Scores";
         teamImg.src = team.img;
         teamImg.alt = team.name;
         teamImg.className = 'mb-2';
-        teamImg.style.width = '9rem';
-        teamImg.style.height = '9rem';
+        teamImg.style.width = '6rem';
+        teamImg.style.height = '6rem';
 
         const teamNameDiv = document.createElement('div');
         teamNameDiv.className = 'text-center';
