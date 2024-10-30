@@ -2,24 +2,20 @@
 
 /** @var yii\web\View $this */
 
+use app\widgets\LeagueMatchs;
 use yii\helpers\Html;
 
 $this->title = "Scores";
 
 ?>
-
 <div>
-
     <h1 class="text-center mt-2 mb-4"><?= Html::encode($this->title) ?></h1>
-
-
     <div class="d-flex justify-content-around my-5">
         <!-- calender -->
         <div class="d-flex align-items-center">
             <label for="dateInput" class="form-label w-100 mx-3">Select Date</label>
-            <input type="date" name="date" id="dateInput" class="form-control" aria-label="Select date" value="<?= date('Y-n-j') ?>">
+            <input type="date" name="date" id="dateInput" class="form-control" aria-label="Select date" value="<?= date('Y-n-j') ?>" onchange="submit()">
         </div>
-
         <!-- search -->
         <div class="input-group w-25" style="height: 20px;">
             <input type="text" class="form-control" placeholder="Search for team or league" aria-label="Search for team name" aria-describedby="button-addon2">
@@ -34,63 +30,173 @@ $this->title = "Scores";
         </div>
     </div>
 
-    <!-- All matches -->
-    <div>
-        <div>
-            <!-- leage name -->
-            <div class="bg-secondary bg-opacity-25 w-100 py-3 align-items-center rounded shadow mb-3 ">
-                <h1 class="text-center">AFC Champions League Elite</h1>
-            </div>
-
-            <!-- matches -->
-            <div class="d-flex justify-content-around align-items-center">
-                <div class="border border-2 p-3 shadow rounded" style="width:480px;height:350px">
-                    <!-- teams and score -->
-                    <div class="d-flex justify-content-between">
-                        <!-- first team -->
-                        <div class="d-flex flex-column align-items-center">
-                            <img
-                                src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/22022.png"
-                                alt="team 1"
-                                class="mb-2"
-                                style="width:9rem;height:9rem" />
-                            <div class="text-center" style="width:9rem;">
-                                <p class="fw-bold text-muted">Estudiantes de La Plata</p>
-                            </div>
-                        </div>
-                        <!-- score and status -->
-                        <div class="mt-5">
-                            <p class="text-muted fs-4">10:00 pm</p>
-                            <div class="d-flex align-items-center justify-content-between mt-4 fs-2 fw-bold text-dark">
-                                <p>2</p>
-                                <p class="text-muted">:</p>
-                                <p>1</p>
-                            </div>
-                        </div>
-                        <!-- second team -->
-                        <div class="d-flex flex-column align-items-center">
-                            <img
-                                src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/22022.png"
-                                alt="team 1"
-                                class="mb-2"
-                                style="width:9rem;height:9rem" />
-                            <div class="text-center" style="width:9rem;">
-                                <p class="fw-bold text-muted">Estudiantes de La Plata</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- place -->
-                    <div class="d-flex flex-column align-items-center justify-content-center mt-4" style="height: 3.5rem;">
-                        <p class="text-secondary fw-medium">Guillermo Laza</p>
-                        <p class="text-muted small">Buenos Aires, Argentina</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="allMatches">
+      
     </div>
 </div>
 
-
 <script>
+    let socketServer;
+    const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
 
+    socketServer = new WebSocket("ws://127.0.0.1:8085");
+
+    socketServer.onmessage = function(event) {
+        let data = event.data;
+
+        if (!isJson(data)) {
+            console.log(data);
+            return;
+        }
+
+        let response = JSON.parse(data);
+        let formatedData = getFormatedDate(response);
+        printData(formatedData);
+    };
+
+    socketServer.onopen = function() {
+        console.log("Connected to WebSocket!");
+        socketServer.send(currentDate)
+    };
+
+    socketServer.onclose = function() {
+        console.log("Connection closed");
+    };
+
+    socketServer.onerror = function() {
+        console.log("Error happens");
+    };
+
+    function isJson(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
+    function submit() {
+        let input = document.getElementById("dateInput").value;
+        const date = input.replace(/-/g, "");
+        socketServer.send(date);
+    }
+
+    function getFormatedDate(data) {
+        let formatedData = [];
+        Object.entries(data).forEach(([key, value]) => {
+            let parts = key.split(":");
+            let leagueName = parts[1];
+
+            if (!formatedData[leagueName]) {
+                formatedData[leagueName] = [];
+            }
+
+            formatedData[leagueName].push(value);
+        });
+        return formatedData;
+    }
+
+    function printData(matchesData) {
+        const allMatchesContainer = document.getElementById("allMatches");
+        allMatchesContainer.innerHTML = "";
+
+        for (let leagueName in matchesData) {
+            let leagueContainer = document.createElement("div");
+            leagueContainer.className = "league-container";
+            leagueContainer.appendChild(getBanner(leagueName));
+
+            let matchesContainer = document.createElement("div");
+            matchesContainer.className = "d-flex justify-content-around align-items-center";
+
+            matchesData[leagueName].forEach(match => {
+                let team1 = JSON.parse(match.team1);
+                let team2 = JSON.parse(match.team2);
+                let city = match.city;
+                let stadium = match.stadium;
+                let status = match.status;
+
+                matchesContainer.appendChild(getMatch(team1, team2, status, stadium, city));
+            });
+
+            leagueContainer.appendChild(matchesContainer);
+            allMatchesContainer.appendChild(leagueContainer);
+        }
+    }
+
+
+    function getBanner(leagueName) {
+        const bannerDiv = document.createElement('div');
+        bannerDiv.className = 'bg-secondary bg-opacity-25 w-100 py-3 align-items-center rounded shadow m-3';
+
+        const title = document.createElement('h1');
+        title.className = 'text-center';
+        title.textContent = leagueName;
+
+        bannerDiv.appendChild(title);
+
+        return bannerDiv;
+    }
+
+    function getMatch(team1, team2, timeOrStatus, stadium, city) {
+        const matchDiv = document.createElement('div');
+        matchDiv.className = 'border border-2 p-3 shadow rounded';
+        matchDiv.style.width = '480px';
+        matchDiv.style.height = '350px';
+
+        const teamScoreDiv = document.createElement('div');
+        teamScoreDiv.className = 'd-flex justify-content-between';
+
+        const team1Div = createTeamElement(team1);
+
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'mt-5';
+        statusDiv.innerHTML = `
+        <p class="text-muted fs-4">${timeOrStatus}</p>
+        <div class="d-flex align-items-center justify-content-between mt-4 fs-2 fw-bold text-dark">
+            <p>${team1.score}</p>
+            <p class="text-muted">:</p>
+            <p>${team2.score}</p>
+        </div>`;
+
+        const team2Div = createTeamElement(team2);
+
+        teamScoreDiv.appendChild(team1Div);
+        teamScoreDiv.appendChild(statusDiv);
+        teamScoreDiv.appendChild(team2Div);
+
+        const locationDiv = document.createElement('div');
+        locationDiv.className = 'd-flex flex-column align-items-center justify-content-center mt-4';
+        locationDiv.style.height = '3.5rem';
+        locationDiv.innerHTML = `
+        <p class="text-secondary fw-medium">${stadium}</p>
+        <p class="text-muted small">${city}</p>`;
+
+        matchDiv.appendChild(teamScoreDiv);
+        matchDiv.appendChild(locationDiv);
+
+        return matchDiv;
+    }
+
+    function createTeamElement(team) {
+        const teamDiv = document.createElement('div');
+        teamDiv.className = 'd-flex flex-column align-items-center';
+
+        const teamImg = document.createElement('img');
+        teamImg.src = team.img;
+        teamImg.alt = team.name;
+        teamImg.className = 'mb-2';
+        teamImg.style.width = '9rem';
+        teamImg.style.height = '9rem';
+
+        const teamNameDiv = document.createElement('div');
+        teamNameDiv.className = 'text-center';
+        teamNameDiv.style.width = '9rem';
+        teamNameDiv.innerHTML = `<p class="fw-bold text-muted">${team.name}</p>`;
+
+        teamDiv.appendChild(teamImg);
+        teamDiv.appendChild(teamNameDiv);
+
+        return teamDiv;
+    }
 </script>
