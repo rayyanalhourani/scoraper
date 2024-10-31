@@ -166,7 +166,7 @@ $this->title = "Scores";
         teamDiv.className = 'text-center';
 
         const teamImg = document.createElement('img');
-        teamImg.src = team.img;
+        teamImg.src = team.img ?? "<?= Yii::getAlias('@web/images/defaultTeam.png'); ?>"
         teamImg.alt = team.name;
         teamImg.className = 'img-fluid mb-2';
         teamImg.style.width = '3rem'; // Adjust size as needed
