@@ -9,7 +9,13 @@ $this->title = "Scores";
 <div class="container my-4">
     <h1 class="text-center mt-2 mb-4 display-5 fw-bold text-primary"><?= Html::encode($this->title) ?></h1>
 
-    <div class="row justify-content-center my-5 align-items-center">
+    <div id="loadingIndicator" class="position-absolute start-50 translate-middle d-flex align-items-center gap-4 d-none">
+        <h5 class="mt-2">Loading data, please wait...</h5>
+        <div class="spinner-border" role="status"></div>
+    </div>
+
+
+    <div class="row justify-content-center my-5 align-items-center w-100">
         <!-- Calendar -->
         <div class="col-md-4 mb-3">
             <label for="dateInput" class="form-label fw-bold fs-5">Select Date</label>
@@ -19,7 +25,7 @@ $this->title = "Scores";
         <!-- Search -->
         <div class="col-md-4 mt-3">
             <div class="input-group">
-                <input type="text" class="form-control" id="searchInput" placeholder="Search for team ,league ,time or status" aria-label="Search for team name">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search for team, league, time, status, location" aria-label="Search for team name">
                 <span class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -52,7 +58,7 @@ $this->title = "Scores";
             console.log(data);
             return;
         }
-
+        hideLoading()
         let response = JSON.parse(data);
         let formattedData = getFormattedDate(response);
         allMatchesData = formattedData;
@@ -63,6 +69,7 @@ $this->title = "Scores";
         const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
         console.log("Connected to WebSocket!");
         socketServer.send(localStorage.getItem("date") || currentDate);
+        showLoading()
     };
 
     socketServer.onclose = function() {
@@ -87,6 +94,18 @@ $this->title = "Scores";
         const date = input.replace(/-/g, "");
         localStorage.setItem("date", date);
         socketServer.send(date);
+        showLoading()
+    }
+</script>
+
+<!-- hide and show indicator -->
+<script>
+    function showLoading() {
+        document.getElementById('loadingIndicator').classList.remove('d-none');
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingIndicator').classList.add('d-none');
     }
 </script>
 
@@ -236,7 +255,10 @@ $this->title = "Scores";
                     team2.name.toLowerCase().includes(query) ||
                     league.toLowerCase().includes(query) ||
                     match.time?.toLowerCase().includes(query) ||
-                    match.status.toLowerCase().includes(query)
+                    match.status.toLowerCase().includes(query) ||
+                    match.city?.toLowerCase().includes(query) ||
+                    match.stadium?.toLowerCase().includes(query)
+
                 );
             });
         }
