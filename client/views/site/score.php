@@ -32,18 +32,19 @@ $this->title = "Scores";
     <div id="allMatches" class="row g-4"></div>
 </div>
 
+<!-- show the choosen date on calendar -->
 <script>
-    let socketServer;
-    const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
-    let allMatchesData = {};
-
-    if (localStorage.getItem("date")!=null) {
+    if (localStorage.getItem("date") != null) {
         document.getElementById("dateInput").value = localStorage.getItem("date").replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
     } else {
         document.getElementById("dateInput").value = new Date().toLocaleDateString("en-CA")
     }
+</script>
 
-    socketServer = new WebSocket("ws://127.0.0.1:8085");
+<!-- sockets and get data -->
+<script>
+    let allMatchesData = {};
+    let socketServer = new WebSocket("ws://127.0.0.1:8085");
     socketServer.onmessage = function(event) {
         let data = event.data;
 
@@ -59,6 +60,7 @@ $this->title = "Scores";
     };
 
     socketServer.onopen = function() {
+        const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
         console.log("Connected to WebSocket!");
         socketServer.send(localStorage.getItem("date") || currentDate);
     };
@@ -86,7 +88,10 @@ $this->title = "Scores";
         localStorage.setItem("date", date);
         socketServer.send(date);
     }
+</script>
 
+<!-- rendring and view data -->
+<script>
     function getFormattedDate(data) {
         let formattedData = [];
         Object.entries(data).forEach(([key, value]) => {
