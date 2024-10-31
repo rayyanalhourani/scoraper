@@ -8,31 +8,28 @@ use yii\helpers\Html;
 $this->title = "Scores";
 
 ?>
-<div>
-    <h1 class="text-center mt-2 mb-4"><?= Html::encode($this->title) ?></h1>
-    <div class="d-flex justify-content-around my-5">
-        <!-- calender -->
-        <div class="d-flex align-items-center">
-            <label for="dateInput" class="form-label w-100 mx-3">Select Date</label>
+<div class="container my-4">
+    <h1 class="text-center mt-2 mb-4 display-5 fw-bold text-primary"><?= Html::encode($this->title) ?></h1>
+    
+    <div class="row justify-content-center my-5">
+        <!-- Calendar -->
+        <div class="col-md-4 mb-3">
+            <label for="dateInput" class="form-label">Select Date</label>
             <input type="date" name="date" id="dateInput" class="form-control" aria-label="Select date" value="<?= date('Y-n-j') ?>" onchange="submit()">
         </div>
-        <!-- search -->
-        <div class="input-group w-25" style="height: 20px;">
-            <input type="text" class="form-control" placeholder="Search for team or league" aria-label="Search for team name" aria-describedby="button-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary d-flex align-items-center gap-1" type="button" id="button-addon2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                    </svg>
-                    <span>Search</span>
+        
+        <!-- Search -->
+        <div class="col-md-5">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for team or league" aria-label="Search for team name">
+                <button class="btn btn-primary" type="button" id="button-addon2">
+                    <i class="bi bi-search me-2"></i>Search
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="allMatches">
-
-    </div>
+    <div id="allMatches" class="row g-4"></div>
 </div>
 
 <script>
@@ -56,7 +53,7 @@ $this->title = "Scores";
 
     socketServer.onopen = function() {
         console.log("Connected to WebSocket!");
-        socketServer.send(currentDate)
+        socketServer.send(currentDate);
     };
 
     socketServer.onclose = function() {
@@ -64,7 +61,7 @@ $this->title = "Scores";
     };
 
     socketServer.onerror = function() {
-        console.log("Error happens");
+        console.log("Error occurred");
     };
 
     function isJson(str) {
@@ -102,94 +99,84 @@ $this->title = "Scores";
         allMatchesContainer.innerHTML = "";
 
         for (let leagueName in matchesData) {
-            let leagueContainer = document.createElement("div");
-            leagueContainer.className = "league-container";
-            leagueContainer.appendChild(getBanner(leagueName));
+            let leagueTitle = document.createElement("h2");
+            leagueTitle.className = "text-secondary my-3 border-bottom pb-2";
+            leagueTitle.textContent = leagueName;
+            allMatchesContainer.appendChild(leagueTitle);
 
-            let matchesContainer = document.createElement("div");
-            matchesContainer.className = "d-flex justify-content-around align-items-center";
+            let leagueRow = document.createElement("div");
+            leagueRow.className = "row g-3";
 
             matchesData[leagueName].forEach(match => {
-                matchesContainer.appendChild(getMatch(match));
+                let matchCard = getMatch(match);
+                leagueRow.appendChild(matchCard);
             });
 
-            leagueContainer.appendChild(matchesContainer);
-            allMatchesContainer.appendChild(leagueContainer);
+            allMatchesContainer.appendChild(leagueRow);
         }
-    }
-
-    function getBanner(leagueName) {
-        const bannerDiv = document.createElement('div');
-        bannerDiv.className = 'bg-secondary bg-opacity-25 w-100 py-3 align-items-center rounded shadow m-3';
-
-        const title = document.createElement('h1');
-        title.className = 'text-center';
-        title.textContent = leagueName;
-
-        bannerDiv.appendChild(title);
-        return bannerDiv;
     }
 
     function getMatch(match) {
         const team1 = JSON.parse(match.team1),
-            team2 = JSON.parse(match.team2);
+              team2 = JSON.parse(match.team2);
 
-        const matchDiv = document.createElement('div');
-        matchDiv.className = 'border border-2 p-3 shadow rounded';
-        matchDiv.style.width = '480px';
-        matchDiv.style.minHeight = '300px';
+        const colDiv = document.createElement('div');
+        colDiv.className = "col-md-6 col-lg-4";
 
-        const teamScoreDiv = document.createElement('div');
-        teamScoreDiv.className = 'd-flex justify-content-between';
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card shadow-sm h-100';
+
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body text-center';
+
+        const teamRow = document.createElement('div');
+        teamRow.className = 'd-flex justify-content-between align-items-center';
 
         const team1Div = createTeamElement(team1);
         const team2Div = createTeamElement(team2);
 
-        const statusDiv = document.createElement('div');
-        statusDiv.className = 'mt-5';
-        statusDiv.innerHTML = `
-        <p class="text-muted fs-4">${match.status}</p>
-        <div class="d-flex align-items-center justify-content-between mt-4 fs-2 fw-bold text-dark">
-            <p>${team1.score}</p>
-            <p class="text-muted">:</p>
-            <p>${team2.score}</p>
-        </div>`;
+        const scoreDiv = document.createElement('div');
+        scoreDiv.className = 'fw-bold text-primary fs-4';
+        scoreDiv.innerHTML = `<span>${team1.score}</span> : <span>${team2.score}</span>`;
 
-        teamScoreDiv.appendChild(team1Div);
-        teamScoreDiv.appendChild(statusDiv);
-        teamScoreDiv.appendChild(team2Div);
+        const statusText = document.createElement('p');
+        statusText.className = 'text-muted my-2';
+        statusText.textContent = match.status;
 
-        const locationDiv = document.createElement('div');
-        locationDiv.className = 'd-flex flex-column align-items-center justify-content-center mt-4';
-        locationDiv.style.height = '3.5rem';
-        locationDiv.innerHTML = `
-        <p class="text-secondary fw-medium">${match.stadium}</p>
-        <p class="text-muted small">${match.city}</p>`;
+        const locationText = document.createElement('p');
+        locationText.className = 'text-secondary small';
+        locationText.textContent = `${match.stadium}, ${match.city}`;
 
-        matchDiv.appendChild(teamScoreDiv);
-        matchDiv.appendChild(locationDiv);
+        teamRow.appendChild(team1Div);
+        teamRow.appendChild(scoreDiv);
+        teamRow.appendChild(team2Div);
 
-        return matchDiv;
+        cardBody.appendChild(teamRow);
+        cardBody.appendChild(statusText);
+        cardBody.appendChild(locationText);
+
+        cardDiv.appendChild(cardBody);
+        colDiv.appendChild(cardDiv);
+
+        return colDiv;
     }
 
     function createTeamElement(team) {
         const teamDiv = document.createElement('div');
-        teamDiv.className = 'd-flex flex-column align-items-center';
+        teamDiv.className = 'text-center';
 
         const teamImg = document.createElement('img');
         teamImg.src = team.img;
         teamImg.alt = team.name;
-        teamImg.className = 'mb-2';
-        teamImg.style.width = '6rem';
-        teamImg.style.height = '6rem';
+        teamImg.className = 'img-fluid mb-2';
+        teamImg.style.width = '3rem'; // Adjust size as needed
 
-        const teamNameDiv = document.createElement('div');
-        teamNameDiv.className = 'text-center';
-        teamNameDiv.style.width = '9rem';
-        teamNameDiv.innerHTML = `<p class="fw-bold text-muted">${team.name}</p>`;
+        const teamName = document.createElement('p');
+        teamName.className = 'fw-bold text-dark small';
+        teamName.textContent = team.name;
 
         teamDiv.appendChild(teamImg);
-        teamDiv.appendChild(teamNameDiv);
+        teamDiv.appendChild(teamName);
 
         return teamDiv;
     }
