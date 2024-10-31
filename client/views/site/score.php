@@ -1,7 +1,7 @@
 <?php
+
 /** @var yii\web\View $this */
 
-use app\widgets\LeagueMatchs;
 use yii\helpers\Html;
 
 $this->title = "Scores";
@@ -35,7 +35,13 @@ $this->title = "Scores";
 <script>
     let socketServer;
     const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
-    let allMatchesData = {}; // Store all matches data
+    let allMatchesData = {};
+
+    if (localStorage.getItem("date")!=null) {
+        document.getElementById("dateInput").value = localStorage.getItem("date").replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+    } else {
+        document.getElementById("dateInput").value = new Date().toLocaleDateString("en-CA")
+    }
 
     socketServer = new WebSocket("ws://127.0.0.1:8085");
     socketServer.onmessage = function(event) {
@@ -54,7 +60,7 @@ $this->title = "Scores";
 
     socketServer.onopen = function() {
         console.log("Connected to WebSocket!");
-        socketServer.send(currentDate);
+        socketServer.send(localStorage.getItem("date") || currentDate);
     };
 
     socketServer.onclose = function() {
@@ -77,6 +83,7 @@ $this->title = "Scores";
     function submit() {
         let input = document.getElementById("dateInput").value;
         const date = input.replace(/-/g, "");
+        localStorage.setItem("date", date);
         socketServer.send(date);
     }
 
@@ -96,37 +103,36 @@ $this->title = "Scores";
     }
 
     function printData(matchesData) {
-    const allMatchesContainer = document.getElementById("allMatches");
-    allMatchesContainer.innerHTML = "";
+        const allMatchesContainer = document.getElementById("allMatches");
+        allMatchesContainer.innerHTML = "";
 
-    let leaguesDisplayed = false;
+        let leaguesDisplayed = false;
 
-    for (let leagueName in matchesData) {
-        if (matchesData[leagueName].length > 0) {
-            leaguesDisplayed = true;
+        for (let leagueName in matchesData) {
+            if (matchesData[leagueName].length > 0) {
+                leaguesDisplayed = true;
 
-            let leagueTitle = document.createElement("h2");
-            leagueTitle.className = "text-secondary my-3 border-bottom pb-2";
-            leagueTitle.textContent = leagueName;
-            allMatchesContainer.appendChild(leagueTitle);
+                let leagueTitle = document.createElement("h2");
+                leagueTitle.className = "text-secondary my-3 border-bottom pb-2";
+                leagueTitle.textContent = leagueName;
+                allMatchesContainer.appendChild(leagueTitle);
 
-            let leagueRow = document.createElement("div");
-            leagueRow.className = "row g-3";
+                let leagueRow = document.createElement("div");
+                leagueRow.className = "row g-3";
 
-            matchesData[leagueName].forEach(match => {
-                let matchCard = getMatch(match);
-                leagueRow.appendChild(matchCard);
-            });
+                matchesData[leagueName].forEach(match => {
+                    let matchCard = getMatch(match);
+                    leagueRow.appendChild(matchCard);
+                });
 
-            allMatchesContainer.appendChild(leagueRow);
+                allMatchesContainer.appendChild(leagueRow);
+            }
+        }
+
+        if (!leaguesDisplayed) {
+            allMatchesContainer.innerHTML = '<p class="text-muted">No matches found for the selected criteria.</p>';
         }
     }
-
-    if (!leaguesDisplayed) {
-        allMatchesContainer.innerHTML = '<p class="text-muted">No matches found for the selected criteria.</p>';
-    }
-}
-
 
     function getMatch(match) {
         const team1 = JSON.parse(match.team1);
