@@ -10,21 +10,23 @@ $this->title = "Scores";
 ?>
 <div class="container my-4">
     <h1 class="text-center mt-2 mb-4 display-5 fw-bold text-primary"><?= Html::encode($this->title) ?></h1>
-    
-    <div class="row justify-content-center my-5">
+
+    <div class="row justify-content-center my-5 align-items-center">
         <!-- Calendar -->
         <div class="col-md-4 mb-3">
-            <label for="dateInput" class="form-label">Select Date</label>
-            <input type="date" name="date" id="dateInput" class="form-control" aria-label="Select date" value="<?= date('Y-n-j') ?>" onchange="submit()">
+            <label for="dateInput" class="form-label fw-bold fs-5">Select Date</label>
+            <input type="date" name="date" id="dateInput" class="form-control fw-bold" aria-label="Select date" value="<?= date('Y-n-j') ?>" onchange="submit()">
         </div>
-        
+
         <!-- Search -->
-        <div class="col-md-5">
+        <div class="col-md-4 mt-3">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for team or league" aria-label="Search for team name">
-                <button class="btn btn-primary" type="button" id="button-addon2">
-                    <i class="bi bi-search me-2"></i>Search
-                </button>
+                <span class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </span>
             </div>
         </div>
     </div>
@@ -118,7 +120,7 @@ $this->title = "Scores";
 
     function getMatch(match) {
         const team1 = JSON.parse(match.team1),
-              team2 = JSON.parse(match.team2);
+            team2 = JSON.parse(match.team2);
 
         const colDiv = document.createElement('div');
         colDiv.className = "col-md-6 col-lg-4";
@@ -143,9 +145,20 @@ $this->title = "Scores";
         statusText.className = 'text-muted my-2';
         statusText.textContent = match.status;
 
-        const locationText = document.createElement('p');
-        locationText.className = 'text-secondary small';
-        locationText.textContent = `${match.stadium}, ${match.city}`;
+        const locationDiv = document.createElement('div');
+        locationDiv.classList="col text-secondary small mt-3"
+
+        const stadiumText = document.createElement('span');
+        stadiumText.textContent = match.stadium;
+        stadiumText.style.display = "block";
+
+        const cityText = document.createElement('span');
+        cityText.textContent = match.city;
+        cityText.style.display = "block";
+
+
+        locationDiv.appendChild(stadiumText)
+        locationDiv.appendChild(cityText)
 
         teamRow.appendChild(team1Div);
         teamRow.appendChild(scoreDiv);
@@ -153,7 +166,7 @@ $this->title = "Scores";
 
         cardBody.appendChild(teamRow);
         cardBody.appendChild(statusText);
-        cardBody.appendChild(locationText);
+        cardBody.appendChild(locationDiv);
 
         cardDiv.appendChild(cardBody);
         colDiv.appendChild(cardDiv);
@@ -169,14 +182,19 @@ $this->title = "Scores";
         teamImg.src = team.img ?? "<?= Yii::getAlias('@web/images/defaultTeam.png'); ?>"
         teamImg.alt = team.name;
         teamImg.className = 'img-fluid mb-2';
-        teamImg.style.width = '3rem'; // Adjust size as needed
+        teamImg.style.width = '4rem';
+
+        const nameDiv = document.createElement('p');
+        teamDiv.style = 'width:6rem';
 
         const teamName = document.createElement('p');
         teamName.className = 'fw-bold text-dark small';
         teamName.textContent = team.name;
 
+        nameDiv.appendChild(teamName);
+
         teamDiv.appendChild(teamImg);
-        teamDiv.appendChild(teamName);
+        teamDiv.appendChild(nameDiv);
 
         return teamDiv;
     }
