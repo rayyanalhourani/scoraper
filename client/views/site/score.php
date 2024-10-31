@@ -1,12 +1,10 @@
 <?php
-
 /** @var yii\web\View $this */
 
 use app\widgets\LeagueMatchs;
 use yii\helpers\Html;
 
 $this->title = "Scores";
-
 ?>
 <div class="container my-4">
     <h1 class="text-center mt-2 mb-4 display-5 fw-bold text-primary"><?= Html::encode($this->title) ?></h1>
@@ -21,7 +19,7 @@ $this->title = "Scores";
         <!-- Search -->
         <div class="col-md-4 mt-3">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for team or league" aria-label="Search for team name">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search for team ,league ,time or status" aria-label="Search for team name">
                 <span class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -37,9 +35,9 @@ $this->title = "Scores";
 <script>
     let socketServer;
     const currentDate = new Date().toLocaleDateString("en-CA").replace(/-/g, "");
+    let allMatchesData = {}; // Store all matches data
 
     socketServer = new WebSocket("ws://127.0.0.1:8085");
-
     socketServer.onmessage = function(event) {
         let data = event.data;
 
@@ -49,8 +47,9 @@ $this->title = "Scores";
         }
 
         let response = JSON.parse(data);
-        let formatedData = getFormatedDate(response);
-        printData(formatedData);
+        let formattedData = getFormattedDate(response);
+        allMatchesData = formattedData;
+        printData(formattedData);
     };
 
     socketServer.onopen = function() {
@@ -81,26 +80,31 @@ $this->title = "Scores";
         socketServer.send(date);
     }
 
-    function getFormatedDate(data) {
-        let formatedData = [];
+    function getFormattedDate(data) {
+        let formattedData = [];
         Object.entries(data).forEach(([key, value]) => {
             let parts = key.split(":");
             let leagueName = parts[1];
 
-            if (!formatedData[leagueName]) {
-                formatedData[leagueName] = [];
+            if (!formattedData[leagueName]) {
+                formattedData[leagueName] = [];
             }
 
-            formatedData[leagueName].push(value);
+            formattedData[leagueName].push(value);
         });
-        return formatedData;
+        return formattedData;
     }
 
     function printData(matchesData) {
-        const allMatchesContainer = document.getElementById("allMatches");
-        allMatchesContainer.innerHTML = "";
+    const allMatchesContainer = document.getElementById("allMatches");
+    allMatchesContainer.innerHTML = "";
 
-        for (let leagueName in matchesData) {
+    let leaguesDisplayed = false;
+
+    for (let leagueName in matchesData) {
+        if (matchesData[leagueName].length > 0) {
+            leaguesDisplayed = true;
+
             let leagueTitle = document.createElement("h2");
             leagueTitle.className = "text-secondary my-3 border-bottom pb-2";
             leagueTitle.textContent = leagueName;
@@ -118,9 +122,15 @@ $this->title = "Scores";
         }
     }
 
+    if (!leaguesDisplayed) {
+        allMatchesContainer.innerHTML = '<p class="text-muted">No matches found for the selected criteria.</p>';
+    }
+}
+
+
     function getMatch(match) {
-        const team1 = JSON.parse(match.team1),
-            team2 = JSON.parse(match.team2);
+        const team1 = JSON.parse(match.team1);
+        const team2 = JSON.parse(match.team2);
 
         const colDiv = document.createElement('div');
         colDiv.className = "col-md-6 col-lg-4";
@@ -146,7 +156,7 @@ $this->title = "Scores";
         statusText.textContent = match.status;
 
         const locationDiv = document.createElement('div');
-        locationDiv.classList="col text-secondary small mt-3"
+        locationDiv.classList = "col text-secondary small mt-3"
 
         const stadiumText = document.createElement('span');
         stadiumText.textContent = match.stadium;
@@ -156,9 +166,8 @@ $this->title = "Scores";
         cityText.textContent = match.city;
         cityText.style.display = "block";
 
-
-        locationDiv.appendChild(stadiumText)
-        locationDiv.appendChild(cityText)
+        locationDiv.appendChild(stadiumText);
+        locationDiv.appendChild(cityText);
 
         teamRow.appendChild(team1Div);
         teamRow.appendChild(scoreDiv);
@@ -197,5 +206,30 @@ $this->title = "Scores";
         teamDiv.appendChild(nameDiv);
 
         return teamDiv;
+    }
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+        const query = this.value.toLowerCase();
+        filterMatches(query);
+    });
+
+    function filterMatches(query) {
+        const filteredData = {};
+
+        for (let league in allMatchesData) {
+            filteredData[league] = allMatchesData[league].filter(match => {
+                const team1 = JSON.parse(match.team1);
+                const team2 = JSON.parse(match.team2);
+                return (
+                    team1.name.toLowerCase().includes(query) ||
+                    team2.name.toLowerCase().includes(query) ||
+                    league.toLowerCase().includes(query) ||
+                    match.time?.toLowerCase().includes(query) ||
+                    match.status.toLowerCase().includes(query)
+                );
+            });
+        }
+
+        printData(filteredData);
     }
 </script>
