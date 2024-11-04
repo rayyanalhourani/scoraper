@@ -2,3 +2,4 @@
 /chatbot/venv/
 /server/composer.phar
 /server/composer.lock
+/scrapingServer/node_modules
