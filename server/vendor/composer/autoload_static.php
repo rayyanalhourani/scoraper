@@ -14,6 +14,10 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
     );
 
     public static $prefixLengthsPsr4 = array (
+        'W' => 
+        array (
+            'WebSocket\\' => 10,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -24,9 +28,12 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Predis\\' => 7,
+            'Phrity\\Util\\' => 12,
+            'Phrity\\Net\\' => 11,
         ),
         'O' => 
         array (
@@ -39,6 +46,10 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
     );
 
     public static $prefixDirsPsr4 = array (
+        'WebSocket\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/websocket/lib',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -59,6 +70,10 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         array (
             0 => __DIR__ . '/../..' . '/src/services',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'Psr\\Http\\Server\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-server-handler/src',
@@ -66,11 +81,21 @@ class ComposerStaticInit3ad2f4f6e6716b8844c56df8dac6528c
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
+        'Phrity\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/util-errorhandler/src',
+        ),
+        'Phrity\\Net\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/net-stream/src',
+            1 => __DIR__ . '/..' . '/phrity/net-uri/src',
         ),
         'OpenSwoole\\Core\\' => 
         array (

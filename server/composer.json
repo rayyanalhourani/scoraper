@@ -16,7 +16,8 @@
         "php": "^7.4",
         "php-webdriver/webdriver": "^1.15",
         "predis/predis": "^2.2",
-        "openswoole/core": "22.1.5"
+        "openswoole/core": "22.1.5",
+        "phrity/websocket": "^1.7"
     },
     "require-dev": {
         "openswoole/ide-helper": "^22.1"

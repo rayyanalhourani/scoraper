@@ -12,7 +12,7 @@ $container->bind('Services\Redis', function () {
 });
 
 $container->bind('Services\Scraping', function () {
-    return new Scraping("http://10.123.41.244:4444/");
+    return new Scraping("ws://localhost:3000");
 });
 
 App::setContainer($container);

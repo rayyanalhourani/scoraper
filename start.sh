@@ -1,9 +1,7 @@
 #!/bin/bash
 
-export TITLE="Selenium Server"
-gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; java -jar server/selenium-server-4.25.0.jar standalone; exec bash"
-
-sleep 10
+export TITLE="scraping Server"
+gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; node scrapingServer/server.js c; exec bash"
 
 export TITLE="Server"
 gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; php server/index.php; exec bash"
