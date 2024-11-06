@@ -1710,7 +1710,7 @@
     "América": "/soccer/team/_/id/227/america",
     "Columbus Crew": "/soccer/team/_/id/183/columbus-crew"
   },
-  "Concacaf W Champions Cup": {
+  "Concacaf Women'sChampions Cup": {
     "Alajuelense": "/soccer/team/_/id/22420/alajuelense",
     "América": "/soccer/team/_/id/22415/america",
     "Frazsiers Whip": "/soccer/team/_/id/22421/frazsiers-whip",
@@ -2048,7 +2048,7 @@
     "St. Lucia": "/soccer/team/_/id/2661/st-lucia",
     "Suriname": "/soccer/team/_/id/2664/suriname"
   },
-  "Concacaf W Gold Cup": {
+  "Concacaf Women'sGold Cup": {
     "Argentina": "/soccer/team/_/id/2750/argentina",
     "Brazil": "/soccer/team/_/id/2752/brazil",
     "Canada": "/soccer/team/_/id/2753/canada",
@@ -2622,7 +2622,7 @@
     "Flamengo U20": "/soccer/team/_/id/18467/flamengo-u20",
     "Olympiacos U20": "/soccer/team/_/id/22331/olympiacos-u20"
   },
-  "Concacaf W Championship": {
+  "Concacaf Women'sChampionship": {
     "Canada": "/soccer/team/_/id/2753/canada",
     "Costa Rica": "/soccer/team/_/id/2894/costa-rica",
     "Haiti": "/soccer/team/_/id/2891/haiti",
