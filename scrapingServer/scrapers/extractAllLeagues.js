@@ -11,7 +11,7 @@ export async function getAllLeagues() {
       timeout: 0,
     });
 
-    const mainContainer = await page.waitForSelector(
+    const mainContainer = await page.$(
       '::-p-xpath(//*[@id="fittPageContainer"]/div[2]/div[2]/div/div[1]/div[1]/div[1]/div/div)'
     );
 
