@@ -1,4 +1,4 @@
-# Scorapper
+# Scoraper
 
 Scoraper is a real-time sports score tracking app that uses web scraping to pull the latest scores from various websites. It features a chatbot to answer user questions about scores, upcoming games, and team info. With live updates and an easy-to-use interface, Scoraper makes staying on top of your favorite sports effortless and interactive.
 
