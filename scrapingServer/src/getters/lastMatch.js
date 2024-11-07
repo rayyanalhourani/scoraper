@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import fs from "fs";
+import { loadArrayFromFile } from "../helpers/files.js";
 
 export async function getLastMatch() {
   try {
@@ -38,15 +38,4 @@ export async function getLastMatch() {
     console.error(error);
     return { error: "Failed to retrieve data" };
   }
-}
-
-function loadArrayFromFile(filePath) {
-  let dataArray = [];
-  try {
-    const data = fs.readFileSync(filePath, "utf-8");
-    dataArray = JSON.parse(data);
-  } catch (err) {
-    console.error("Error reading file:", err);
-  }
-  return dataArray;
 }

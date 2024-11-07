@@ -1,6 +1,5 @@
 import puppeteer from "puppeteer";
-import fs from "fs";
-
+import { saveArrayToFile , loadArrayFromFile } from "../helpers/files.js";
 export async function getAllLeagues() {
   try {
     const browser = await puppeteer.launch({ headless: true });
@@ -33,16 +32,6 @@ export async function getAllLeagues() {
     console.log(error);
     return { error: "Failed to retrieve data" };
   }
-}
-
-function saveArrayToFile(filePath, data) {
-  fs.writeFile(filePath, JSON.stringify(data), (err) => {
-    if (err) {
-      console.error("Error writing to file:", err);
-    } else {
-      console.log("File written successfully!");
-    }
-  });
 }
 
 getAllLeagues();

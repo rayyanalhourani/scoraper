@@ -1,6 +1,8 @@
 import express from "express";
 import { WebSocketServer } from "ws";
-import { getScores } from "./scrapers/getScores.js";
+import { getScores } from "./src/getters/scores.js";
+import { getLastMatch } from "./src/getters/lastMatch.js";
+import { getNextMatch } from "./src/getters/nextMatch.js";
 
 const app = express();
 const PORT = 3000;
@@ -16,9 +18,16 @@ wss.on("connection", (ws) => {
 
   ws.on("message", async (message) => {
     try {
-      const { date } = JSON.parse(message);
-      const scores = await getScores(date);
-      ws.send(JSON.stringify({ scores }));
+      const { type, value } = JSON.parse(message);
+      let result = null;
+      if (type == "scores") {
+        result = await getScores(value);
+      } else if (type == "lastMatch") {
+        result = await getLastMatch(value);
+      } else if (type == "nextMatch") {
+        result = await getNextMatch(value);
+      }
+      ws.send(JSON.stringify({ result }));
     } catch (error) {
       ws.send(JSON.stringify({ error: "Failed to scrape data" }));
     }

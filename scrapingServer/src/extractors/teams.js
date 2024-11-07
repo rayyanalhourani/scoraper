@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
-import fs from "fs";
 import PQueue from "p-queue";
+import { saveArrayToFile , loadArrayFromFile } from "../helpers/files.js";
 
 export async function getAllTeams() {
   try {
@@ -73,27 +73,6 @@ export async function getAllTeams() {
     console.error(error);
     return { error: "Failed to retrieve data" };
   }
-}
-
-function loadArrayFromFile(filePath) {
-  let dataArray = [];
-  try {
-    const data = fs.readFileSync(filePath, "utf-8");
-    dataArray = JSON.parse(data);
-  } catch (err) {
-    console.error("Error reading file:", err);
-  }
-  return dataArray;
-}
-
-function saveArrayToFile(filePath, data) {
-  fs.writeFile(filePath, JSON.stringify(data, null, 2), (err) => {
-    if (err) {
-      console.error("Error writing to file:", err);
-    } else {
-      console.log("File written successfully!");
-    }
-  });
 }
 
 function updateLeaguesAndExtractTeams(data) {
