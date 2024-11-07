@@ -1,14 +1,14 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
 
-export async function getLastMatch(teamName = "Arsenal") {
+export async function getLastMatch() {
   try {
     const browser = await puppeteer.launch({ headless: true });
 
-    let allTeams = loadArrayFromFile("../../data/teams.txt");
+    let allTeams = loadArrayFromFile("../../data/teamsOnly.txt");
+    let teamLink = allTeams[teamName];
+    teamLink = teamLink.replace("/soccer/team/", "/football/team/results/");
 
-    let teamLink = allTeams["English Premier League"][teamName];
-    teamLink = teamLink.replace("/soccer/team/","/football/team/results/");
     const page = await browser.newPage();
     await page.goto(`https://www.espn.com${teamLink}`, {
       waitUntil: "networkidle0",
@@ -28,12 +28,12 @@ export async function getLastMatch(teamName = "Arsenal") {
       let team2 = await mainContainer[3].evaluate((el) => el.textContent);
       let league = await mainContainer[5].evaluate((el) => el.textContent);
 
-      return [date,team1,result,team2,league];
+      await browser.close();
+      return [date, team1, result, team2, league];
     } else {
+      await browser.close();
       return null;
     }
-
-    await browser.close();
   } catch (error) {
     console.error(error);
     return { error: "Failed to retrieve data" };

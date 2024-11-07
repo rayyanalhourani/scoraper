@@ -1,14 +1,15 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
 
-export async function getNextMatch(teamName = "Arsenal") {
+export async function getNextMatch() {
   try {
     const browser = await puppeteer.launch({ headless: true });
 
-    let allTeams = loadArrayFromFile("../../data/teams.txt");
+    let allTeams = loadArrayFromFile("../../data/teamsOnly.txt");    
 
-    let teamLink = allTeams["English Premier League"][teamName];
+    let teamLink = allTeams[teamName];
     teamLink = teamLink.replace("/soccer/team/", "/football/team/fixtures/");
+    
     const page = await browser.newPage();
     await page.goto(`https://www.espn.com${teamLink}`, {
       waitUntil: "networkidle0",
@@ -47,5 +48,3 @@ function loadArrayFromFile(filePath) {
   }
   return dataArray;
 }
-
-getNextMatch()
