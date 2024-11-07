@@ -28,7 +28,7 @@ export async function getAllLeagues() {
         ])
       );
     }
-    saveArrayToFile("extracedData/allLeagues.txt", allLeagues);
+    saveArrayToFile("../../data/allLeagues.txt", allLeagues);
   } catch (error) {
     console.log(error);
     return { error: "Failed to retrieve data" };

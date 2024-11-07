@@ -5,7 +5,7 @@ export async function getLastMatch(teamName = "Arsenal") {
   try {
     const browser = await puppeteer.launch({ headless: true });
 
-    let allTeams = loadArrayFromFile("extracedData/teams.txt");
+    let allTeams = loadArrayFromFile("../../data/teams.txt");
 
     let teamLink = allTeams["English Premier League"][teamName];
     teamLink = teamLink.replace("/soccer/team/","/football/team/results/");
@@ -28,8 +28,7 @@ export async function getLastMatch(teamName = "Arsenal") {
       let team2 = await mainContainer[3].evaluate((el) => el.textContent);
       let league = await mainContainer[5].evaluate((el) => el.textContent);
 
-      console.log([date,team1,result,team2,league]);
-      
+      return [date,team1,result,team2,league];
     } else {
       return null;
     }
@@ -51,5 +50,3 @@ function loadArrayFromFile(filePath) {
   }
   return dataArray;
 }
-
-getLastMatch();

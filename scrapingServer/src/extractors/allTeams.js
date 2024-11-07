@@ -7,7 +7,7 @@ export async function getAllTeams() {
     const browser = await puppeteer.launch({ headless: true });
     const queue = new PQueue({ concurrency: 20 });
 
-    let allLeagues = loadArrayFromFile("extracedData/allLeagues.txt");
+    let allLeagues = loadArrayFromFile("../../data/allLeagues.txt");
     let allTeams = {};
 
     const scrapeLeague = async (league) => {
@@ -63,7 +63,7 @@ export async function getAllTeams() {
 
     await queue.onIdle();
 
-    saveArrayToFile("extracedData/teams.txt", allTeams);
+    saveArrayToFile("../../data/teams.txt", allTeams);
 
     await browser.close();
   } catch (error) {
