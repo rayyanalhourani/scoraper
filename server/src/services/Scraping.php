@@ -18,8 +18,8 @@ class Scraping
     }
 
     public function getScores($date) {
-        self::$client->text(json_encode(["date"=>$date]));
+        self::$client->text(json_encode(["type"=>"scores","value"=>$date]));
         $result = json_decode(self::$client->receive(),true);
-        return $result["scores"];
+        return $result["result"];
     }
 }
