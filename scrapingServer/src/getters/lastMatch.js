@@ -5,7 +5,7 @@ export async function getLastMatch(teamName) {
   try {
     const browser = await puppeteer.launch({ headless: true });
 
-    let allTeams = loadArrayFromFile("../../data/teamsOnly.txt");
+    let allTeams = loadArrayFromFile("../../data/teamsOnly.json");
     let teamLink = allTeams[teamName];
     teamLink = teamLink.replace("/soccer/team/", "/football/team/results/");
 

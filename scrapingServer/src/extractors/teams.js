@@ -7,7 +7,7 @@ export async function getAllTeams() {
     const browser = await puppeteer.launch({ headless: true });
     const queue = new PQueue({ concurrency: 20 });
 
-    let allLeagues = loadArrayFromFile("../../data/allLeagues.txt");
+    let allLeagues = loadArrayFromFile("../../data/allLeagues.json");
     let allTeams = {};
 
     const scrapeLeague = async (league) => {
@@ -63,11 +63,12 @@ export async function getAllTeams() {
 
     await queue.onIdle();
 
-    const { updatedLeagues, teamsOnly } = updateLeaguesAndExtractTeams(allTeams);
+    const { updatedLeagues, teamsOnly ,namesOnly} = updateLeaguesAndExtractTeams(allTeams);
 
-    saveArrayToFile("../../data/teamsWithLeagues.txt", updatedLeagues);
-    saveArrayToFile("../../data/teamsOnly.txt", teamsOnly);
-
+    await saveArrayToFile("../../data/teamsWithLeagues.json", updatedLeagues);
+    await saveArrayToFile("../../data/teamsOnly.json", teamsOnly);
+    await saveArrayToFile("../../data/namesOnly.json", namesOnly);
+    
     await browser.close();
   } catch (error) {
     console.error(error);
@@ -78,6 +79,7 @@ export async function getAllTeams() {
 function updateLeaguesAndExtractTeams(data) {
   const updatedLeagues = {};
   const teamsOnly = {};
+  const namesOnly = [];
 
   for (const [leagueName, teams] of Object.entries(data)) {
     const updatedLeagueName = leagueName.includes("W")
@@ -93,11 +95,12 @@ function updateLeaguesAndExtractTeams(data) {
           : teamName;
       updatedTeams[updatedTeamName] = teamUrl;
       teamsOnly[updatedTeamName] = teamUrl;
+      namesOnly.push(updatedTeamName)
     }
     updatedLeagues[updatedLeagueName] = updatedTeams;
   }
 
-  return { updatedLeagues, teamsOnly };
+  return { updatedLeagues, teamsOnly ,namesOnly};
 }
 
 getAllTeams();
