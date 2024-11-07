@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 import { loadArrayFromFile } from "../helpers/files.js";
 
-export async function getLastMatch() {
+export async function getLastMatch(teamName) {
   try {
     const browser = await puppeteer.launch({ headless: true });
 
