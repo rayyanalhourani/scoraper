@@ -63,7 +63,10 @@ export async function getAllTeams() {
 
     await queue.onIdle();
 
-    saveArrayToFile("../../data/teams.txt", allTeams);
+    const { updatedLeagues, teamsOnly } = updateLeaguesAndExtractTeams(allTeams);
+
+    saveArrayToFile("../../data/teamsWithLeagues.txt", updatedLeagues);
+    saveArrayToFile("../../data/teamsOnly.txt", teamsOnly);
 
     await browser.close();
   } catch (error) {
@@ -91,6 +94,31 @@ function saveArrayToFile(filePath, data) {
       console.log("File written successfully!");
     }
   });
+}
+
+function updateLeaguesAndExtractTeams(data) {
+  const updatedLeagues = {};
+  const teamsOnly = {};
+
+  for (const [leagueName, teams] of Object.entries(data)) {
+    const updatedLeagueName = leagueName.includes("W")
+      ? leagueName.replace("W", "Women's")
+      : leagueName;
+
+    const updatedTeams = {};
+
+    for (const [teamName, teamUrl] of Object.entries(teams)) {
+      const updatedTeamName =
+        updatedLeagueName.includes("Women's") && !teamName.includes("Women's")
+          ? teamName + " Women's"
+          : teamName;
+      updatedTeams[updatedTeamName] = teamUrl;
+      teamsOnly[updatedTeamName] = teamUrl;
+    }
+    updatedLeagues[updatedLeagueName] = updatedTeams;
+  }
+
+  return { updatedLeagues, teamsOnly };
 }
 
 getAllTeams();
