@@ -27,7 +27,7 @@ export async function getNextMatch(teamName) {
       let league = await mainContainer[5].evaluate((el) => el.textContent);
 
       await browser.close();
-      return [date, team1, time, team2, league];
+      return {date, team1, time, team2, league};
     } else {
       await browser.close();
       return null;
