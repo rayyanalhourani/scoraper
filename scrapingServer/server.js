@@ -11,6 +11,28 @@ const server = app.listen(PORT, () => {
   console.log(`HTTP server running on http://localhost:${PORT}`);
 });
 
+app.get("/nextMatch", async (req, res) => {
+  const { teamName } = req.query;
+
+  if (!teamName) {
+    return res.status(400).json({ error: "Team name is required." });
+  }
+
+  let nextmatch = await getNextMatch(teamName);
+  return res.status(200).json({ result: nextmatch });
+});
+
+app.get("/lastMatch", async (req, res) => {
+  const { teamName } = req.query;
+
+  if (!teamName) {
+    return res.status(400).json({ error: "Team name is required." });
+  }
+
+  let nextmatch = await getLastMatch(teamName);
+  return res.status(200).json({ result: nextmatch });
+});
+
 const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
