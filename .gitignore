@@ -1,5 +1,6 @@
 /server/vendor
 /chatbot/venv/
+/chatbot/.rasa
 /server/composer.phar
 /server/composer.lock
 /scrapingServer/node_modules

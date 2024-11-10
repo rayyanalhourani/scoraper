@@ -8,6 +8,15 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - next_match
+  - last_match
+
+entities:
+  - team 
+
+actions:
+  - action_last_match
+  - action_next_match
 
 responses:
   utter_greet:
@@ -28,6 +37,12 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+  utter_next_match:
+  - text: "next match"
+
+  utter_last_match:
+  - text: "last match"
 
 session_config:
   session_expiration_time: 60
