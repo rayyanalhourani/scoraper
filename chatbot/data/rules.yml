@@ -11,3 +11,21 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: activate match form
+  steps:
+  - intent: help_match
+  - action: utter_help
+  - action: match_form
+  - active_loop: match_form
+
+- rule: submit match form
+  condition:
+  - active_loop: match_form
+  steps:
+  - action: match_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_match_form
+

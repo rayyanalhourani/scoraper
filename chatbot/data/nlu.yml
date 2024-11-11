@@ -13,6 +13,8 @@ nlu:
     - Tell me the next match details for [Manchester United](team)
     - Show me the upcoming schedule for [Barcelona](team)
     - When is [Paris Saint-Germain](team) scheduled to play?
+    - Show me the last game of [AC Milan](team)
+
 
 - intent: last_match
   examples: |
@@ -114,3 +116,23 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: match_type
+  examples: |
+      - [next](type)
+      - [last](type)
+      - [next match](type)
+      - [last match](type)
+      - i need [next](type)
+      - what is last [last](type)
+      - give me [next match](type)
+      - i want [last match](type)
+
+- intent: help_match
+  examples: |
+      - how to use this
+      - help me
+      - i need help
+      - how to find match
+      - i want to ask about match
+      - i need result

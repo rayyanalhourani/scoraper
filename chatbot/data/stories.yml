@@ -28,12 +28,16 @@ stories:
       - intent: deny
       - action: utter_goodbye
 
-  - story: ask about last match
-    steps:
-      - intent: next_match
-      - action: action_next_match
-
   - story: ask about next match
     steps:
+      - intent: next_match
+        entities:
+          - team
+      - action: action_next_match
+
+  - story: ask about last match
+    steps:
       - intent: last_match
+        entities:
+          - team
       - action: action_last_match

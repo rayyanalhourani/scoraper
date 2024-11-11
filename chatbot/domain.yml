@@ -10,52 +10,82 @@ intents:
   - bot_challenge
   - next_match
   - last_match
+  - match_type
+  - help_match
+  - help
 
 entities:
-  - team 
-  
+  - team
+  - type
+
 slots:
   team:
     type: text
-    influence_conversation: false
+    influence_conversation: true
     mappings:
       - type: from_entity
         entity: team
-        role: null
-        conditions: []
+
+  type:
+    type: categorical
+    influence_conversation: true
+    values:
+      - next
+      - last
+      - next match
+      - last match
+    mappings:
+      - type: from_entity
+        entity: type
 
 actions:
   - action_last_match
   - action_next_match
+  - action_submit_match_form
+
+forms:
+  match_form:
+    required_slots:
+      - type
+      - team
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hey! How are you?"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Did that help you?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Great, carry on!"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Bye"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
 
   utter_next_match:
-  - text: "next match"
+    - text: "next match"
 
   utter_last_match:
-  - text: "last match"
+    - text: "last match"
 
   utter_out_of_scope:
-  - text: Sorry, I can't handle that request.
+    - text: Sorry, I can't handle that request.
+
+  utter_ask_type:
+    - text: choose between "next match" or "last match" as you need
+
+  utter_ask_team:
+    - text: enter the team name that you want to get match details
+  
+  utter_help:
+    - text: this bot is to help you to get the next or last match for a team.
 
 session_config:
   session_expiration_time: 60
