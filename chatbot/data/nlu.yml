@@ -136,3 +136,9 @@ nlu:
       - how to find match
       - i want to ask about match
       - i need result
+
+- intent: hakeem_logo
+  examples: |
+      - give me hakeem_logo
+      - hakeem_logo
+      - i need hakeem_logo

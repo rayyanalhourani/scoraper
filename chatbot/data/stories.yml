@@ -41,3 +41,8 @@ stories:
         entities:
           - team
       - action: action_last_match
+
+  - story: ask about hakeem logo
+    steps:
+      - intent: hakeem_logo
+      - action: utter_hakeem_logo
