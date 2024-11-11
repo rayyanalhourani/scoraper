@@ -13,6 +13,16 @@ intents:
 
 entities:
   - team 
+  
+slots:
+  team:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: team
+        role: null
+        conditions: []
 
 actions:
   - action_last_match
@@ -43,6 +53,9 @@ responses:
 
   utter_last_match:
   - text: "last match"
+
+  utter_out_of_scope:
+  - text: Sorry, I can't handle that request.
 
 session_config:
   session_expiration_time: 60

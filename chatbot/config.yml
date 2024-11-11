@@ -1,14 +1,9 @@
-recipe: default.v1
-assistant_id: 20241110-115600-rigid-graph
-
 language: en
 
 pipeline:
 - name: WhitespaceTokenizer
 - name: RegexFeaturizer
 - name: LexicalSyntacticFeaturizer
-- name: RegexEntityExtractor
-- name: CRFEntityExtractor
 - name: CountVectorsFeaturizer
 - name: CountVectorsFeaturizer
   analyzer: char_wb
@@ -29,3 +24,4 @@ policies:
   max_history: 5
   epochs: 100
 - name: RulePolicy
+assistant_id: 20241110-153432-sensitive-symbol
