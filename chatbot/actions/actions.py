@@ -1,7 +1,7 @@
 from typing import Any, Text, Dict, List
-from rasa_sdk import Action, Tracker
-from rasa_sdk.executor import CollectingDispatcher
-from fuzzywuzzy import process
+from rasa_sdk import Action, Tracker # type: ignore
+from rasa_sdk.executor import CollectingDispatcher # type: ignore
+from fuzzywuzzy import process # type: ignore
 import yaml
 from pathlib import Path
 import requests
@@ -112,8 +112,8 @@ class ActionSubmitMatchForm(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        type_input = next(tracker.get_latest_entity_values("type"), None)
-        team_input = next(tracker.get_latest_entity_values("team"), None)
+        type_input = tracker.get_slot("type")
+        team_input = tracker.get_slot("team")
         
         if team_input:
             best_match, score = process.extractOne(team_input, TEAMS)

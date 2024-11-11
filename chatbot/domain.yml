@@ -26,7 +26,6 @@ slots:
     mappings:
       - type: from_entity
         entity: team
-
   type:
     type: categorical
     influence_conversation: true
@@ -82,20 +81,20 @@ responses:
   utter_ask_type:
     - text: choose one
       buttons:
-      - title: "Next match"
-        payload: '/inform{{"type":"next"}}'
-      - title: "Last match"
-        payload: '/inform{{"type":"last"}}'
+        - title: "Next match"
+          payload: '/match_type{{"type":"next"}}'
+        - title: "Last match"
+          payload: '/match_type{{"type":"last"}}'
 
   utter_ask_team:
     - text: enter the team name that you want to get match details
-  
+
   utter_help:
     - text: this bot is to help you to get the next or last match for a team.
 
   utter_hakeem_logo:
-      - text: "Here is hakeem logo"
-        image: "https://ehs.com.jo/sites/default/files/2024-10/Hakeem%20Logo-01.jpg"
+    - text: "Here is hakeem logo"
+      image: "https://ehs.com.jo/sites/default/files/2024-10/Hakeem%20Logo-01.jpg"
 
 session_config:
   session_expiration_time: 60
