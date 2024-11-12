@@ -1,31 +1,45 @@
 version: "3.1"
 
 rules:
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Say 'I am a bot' anytime the user challenges
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - rule: activate match form
+    steps:
+      - intent: help_match
+      - action: utter_help
+      - action: match_form
+      - active_loop: match_form
 
-- rule: activate match form
-  steps:
-  - intent: help_match
-  - action: utter_help
-  - action: match_form
-  - active_loop: match_form
+  - rule: submit match form
+    condition:
+      - active_loop: match_form
+    steps:
+      - action: match_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_submit_match_form
 
-- rule: submit match form
-  condition:
-  - active_loop: match_form
-  steps:
-  - action: match_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - action: action_submit_match_form
+  - rule: activate search form
+    steps:
+      - intent: ask_doctor_or_patient
+      - action: search_form
+      - active_loop: search_form
 
+  - rule: submit search form
+    condition:
+      - active_loop: search_form
+    steps:
+      - action: search_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_submit_search_form

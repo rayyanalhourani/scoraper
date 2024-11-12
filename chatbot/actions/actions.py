@@ -2,11 +2,11 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker # type: ignore
 from rasa_sdk.executor import CollectingDispatcher # type: ignore
 from fuzzywuzzy import process # type: ignore
+from rasa_sdk.events import SlotSet # type: ignore
 import yaml
 from pathlib import Path
 import requests
 
-# Load the teams from the NLU YAML file
 def load_teams_from_nlu():
     file_path = Path("./data/teamsLookup.yml")
     with file_path.open("r") as file:
@@ -22,7 +22,6 @@ def load_teams_from_nlu():
 
 TEAMS = load_teams_from_nlu()
 
-# Function to get match data from the server
 def get_match(type, team):
     try:
         params = {"teamName": team}
@@ -35,7 +34,6 @@ def get_match(type, team):
         print(f"Request failed: {e}")
         return {"error": "Failed to retrieve match data"}
 
-# Message functions
 def message_last_match(best_match, match_data):
     date = match_data.get("date", "N/A")
     team1 = match_data.get("team1", "N/A")
@@ -61,12 +59,9 @@ class ActionLastMatch(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         team_input = next(tracker.get_latest_entity_values("team"), None)
-        print(team_input)
         
         if team_input:
             best_match, score = process.extractOne(team_input, TEAMS)
-            print(f"User input: {team_input}")
-            print(f"Best match: {best_match}, Score: {score}")
             
             if score >= 80:
                 last_match_data = get_match("lastMatch", best_match)
@@ -87,12 +82,9 @@ class ActionNextMatch(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         team_input = next(tracker.get_latest_entity_values("team"), None)
-        print(team_input)
 
         if team_input:
             best_match, score = process.extractOne(team_input, TEAMS)
-            print(f"User input: {team_input}")
-            print(f"Best match: {best_match}, Score: {score}")
             
             if score >= 80:
                 next_match_data = get_match("nextMatch", best_match)
@@ -117,7 +109,7 @@ class ActionSubmitMatchForm(Action):
         
         if team_input:
             best_match, score = process.extractOne(team_input, TEAMS)
-            if score >= 80:
+            if score >= 70:
                 match_type = "nextMatch" if type_input in ["next", "next match"] else "lastMatch"
                 match_data = get_match(match_type, best_match)
                 message_function = message_next_match if match_type == "nextMatch" else message_last_match
@@ -128,3 +120,20 @@ class ActionSubmitMatchForm(Action):
             dispatcher.utter_message(text="Please specify the team you're asking about.")
         
         return []
+
+class ActionSubmitSearchForm(Action):
+    def name(self) -> Text:
+        return "action_submit_search_form"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        searchFor = tracker.get_slot("searchFor")
+        searchType = tracker.get_slot("searchType")
+        searchValue = tracker.get_slot("searchValue")
+        
+        dispatcher.utter_message(text=f"you are searching for {searchFor} and {searchType} and the value {searchValue}")
+        
+        return [SlotSet("searchFor", None), SlotSet("searchType", None), SlotSet("searchValue", None)]
+

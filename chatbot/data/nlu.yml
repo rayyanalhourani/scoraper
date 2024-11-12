@@ -145,3 +145,38 @@ nlu:
       - give me hakeem_logo
       - hakeem_logo
       - i need hakeem_logo
+
+  - intent: enter_search_for
+    examples: |
+      - [doctor](searchFor)
+      - [patient](searchFor)
+      - i want to ask about [doctor](searchFor)
+      - i want to ask about [patient](searchFor)
+      - [doctors](searchFor)
+      - [patients](searchFor)
+
+  - intent: enter_search_type
+    examples: |
+      - [byName](searchType)
+      - [byId](searchType)
+      - i want to ask [byName](searchType)
+      - i want to ask about [byId](searchType)
+
+  - intent: enter_search_value
+    examples: |
+      - [Ahmad Mahmoud](searchValue)
+      - The name is [mahmoud jamal](searchValue)
+      - name : [sara mohammad](searchValue)
+      - the id [2142134123](searchValue)
+      - [4215123123](searchValue)
+
+  - intent: ask_doctor_or_patient
+    examples: |
+      - i want to ask about patient
+      - i want to ask about doctor
+      - patient
+      - doctor
+      - i want details about
+      - i want details about patient
+      - i want details about patient
+      - i want details about patient or doctor

@@ -12,12 +12,18 @@ intents:
   - last_match
   - match_type
   - help_match
-  - help
   - hakeem_logo
+  - enter_search_for
+  - enter_search_type
+  - enter_search_value
+  - ask_doctor_or_patient
 
 entities:
   - team
   - type
+  - searchFor
+  - searchType
+  - searchValue
 
 slots:
   team:
@@ -26,6 +32,7 @@ slots:
     mappings:
       - type: from_entity
         entity: team
+
   type:
     type: categorical
     influence_conversation: true
@@ -38,17 +45,52 @@ slots:
       - type: from_entity
         entity: type
 
+  searchFor:
+    type: categorical
+    influence_conversation: true
+    values:
+      - Doctor
+      - Patiant
+    mappings:
+      - type: from_entity
+        entity: searchFor
+  
+  searchType:
+    type: categorical
+    influence_conversation: true
+    values:
+      - byName
+      - byId
+    mappings:
+      - type: from_entity
+        entity: searchType
+  
+  searchValue:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: searchValue
+  
+
 actions:
   - action_last_match
   - action_next_match
   - action_submit_match_form
+  - action_submit_search_form
 
 forms:
   match_form:
     required_slots:
       - type
       - team
-
+  
+  search_form:
+    required_slots:
+      - searchFor
+      - searchType
+      - searchValue
+  
 responses:
   utter_greet:
     - text: "Hey! How are you?"
@@ -93,8 +135,32 @@ responses:
     - text: this bot is to help you to get the next or last match for a team.
 
   utter_hakeem_logo:
-    - text: "Here is hakeem logo"
+    - text: "Here is Hakeem logo"
       image: "https://ehs.com.jo/sites/default/files/2024-10/Hakeem%20Logo-01.jpg"
+    - text: "Another version of Hakeem logo"
+      image: "https://ehs.com.jo/sites/default/files/2020-06/Untitled%20%28.svg"
+    - text: "One more version of Hakeem logo"
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN1__obHMWCXmzsqzV6LCuFmcETH-IZ8Z3xzVGnDZr9CkBup2nLRcDawrZXVrYxTbNKlo&usqp=CAU"
+
+
+  utter_ask_searchFor:
+    - text: Do you want search for Patient or Doctor?
+      buttons:
+        - title: "Doctor"
+          payload: '/enter_search_for{{"searchFor":"doctor"}}'
+        - title: "Patient"
+          payload: '/enter_search_for{{"searchFor":"patient"}}'
+
+  utter_ask_searchType:
+    - text: Do you want search by name or by id?
+      buttons:
+        - title: "By name"
+          payload: '/enter_search_type{{"searchType":"byName"}}'
+        - title: "By Id"
+          payload: '/enter_search_type{{"searchType":"byId"}}'
+
+  utter_ask_searchValue:
+    - text: Enter the value that you want ask for.
 
 session_config:
   session_expiration_time: 60
