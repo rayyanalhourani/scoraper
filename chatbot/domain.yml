@@ -134,15 +134,18 @@ responses:
   utter_help:
     - text: this bot is to help you to get the next or last match for a team.
 
-  utter_hakeem_logo:
-    - text: "Here is Hakeem logo"
+  utter_hakeem_logo1:
+    - text: "Here is Hakeem logo 1"
       image: "https://ehs.com.jo/sites/default/files/2024-10/Hakeem%20Logo-01.jpg"
+
+  utter_hakeem_logo2:
     - text: "Another version of Hakeem logo"
       image: "https://ehs.com.jo/sites/default/files/2020-06/Untitled%20%28.svg"
+
+  utter_hakeem_logo3:
     - text: "One more version of Hakeem logo"
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN1__obHMWCXmzsqzV6LCuFmcETH-IZ8Z3xzVGnDZr9CkBup2nLRcDawrZXVrYxTbNKlo&usqp=CAU"
-
-
+      
   utter_ask_searchFor:
     - text: Do you want search for Patient or Doctor?
       buttons:
