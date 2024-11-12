@@ -150,33 +150,65 @@ nlu:
     examples: |
       - [doctor](searchFor)
       - [patient](searchFor)
-      - i want to ask about [doctor](searchFor)
-      - i want to ask about [patient](searchFor)
-      - [doctors](searchFor)
-      - [patients](searchFor)
 
   - intent: enter_search_type
     examples: |
       - [byName](searchType)
       - [byId](searchType)
-      - i want to ask [byName](searchType)
-      - i want to ask about [byId](searchType)
 
   - intent: enter_search_value
     examples: |
-      - [Ahmad Mahmoud](searchValue)
-      - The name is [mahmoud jamal](searchValue)
-      - name : [sara mohammad](searchValue)
-      - the id [2142134123](searchValue)
-      - [4215123123](searchValue)
+      - [Ali Khan](searchValue)
+      - I’m looking for [Sarah Williams](searchValue)
+      - Search for [Ahmad Hassan](searchValue)
+      - Find [Emily Davis](searchValue)
+      - Show information for [Mohammad Ali](searchValue)
+      - Patient name: [Zara Khalid](searchValue)
+      - Doctor’s name: [Dr. Sara Ahmed](searchValue)
+      - The name to search for is [Hani Saleh](searchValue)
+      - Find the details for [Omar Abdullah](searchValue)
+      - Person named [Laila Al-Majed](searchValue)
+      - Doctor [Hussein Ibrahim](searchValue)
+      - Looking up [Ali Reza](searchValue)
+      - Please search [Fatima Saeed](searchValue)
+      - Patient is [Abdullah Murad](searchValue)
+      - Check name [Nada Yusuf](searchValue)
+      - My search is for [Mariam Sadiq](searchValue)
+      - Look for doctor [Sameer Abdul](searchValue)
+      - Query for [Ahmed Mohsin](searchValue)
+      - Retrieve details on [Hala Khaleel](searchValue)
+      - Check [Aliya Kamal](searchValue)
+      - Is there info on [Ayesha Noor](searchValue)
+      - I’m trying to find [Bashir Karim](searchValue)
+      - Search by name: [Sahar Hamid](searchValue)
+      
+      - My ID is [3498274](searchValue)
+      - The ID is [4582739402](searchValue)
+      - ID number [512348675](searchValue)
+      - Look up [1234567890](searchValue)
+      - Let’s search for [213987564](searchValue)
+      - I have ID [8453729](searchValue)
+      - The identifier is [762183940](searchValue)
+      - Searching for ID [32415678](searchValue)
+      - Doctor ID: [987654321](searchValue)
+      - I need details on [2123456789](searchValue)
+      - Lookup person by ID [46781239](searchValue)
+      - Show me records for [3458762139](searchValue)
 
   - intent: ask_doctor_or_patient
     examples: |
-      - i want to ask about patient
-      - i want to ask about doctor
-      - patient
-      - doctor
-      - i want details about
-      - i want details about patient
-      - i want details about patient
-      - i want details about patient or doctor
+      - I want to ask about a patient or doctor
+      - Help me search
+      - I need information about a doctor or patient
+      - Can you find a doctor or patient for me?
+      - I'm looking for doctor or patient information
+      - I want to look up a patient or a doctor
+      - Show me details for a doctor or patient
+      - Can you help me search for a patient or doctor?
+      - How do I search for a doctor or patient?
+      - Find information on a doctor or patient
+
+  - regex: searchValue
+    examples: |
+      - \b[A-Z][a-z]+(?:\s[A-Z][a-z]+)+
+      - \b\d{7,10}\b

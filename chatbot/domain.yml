@@ -49,12 +49,12 @@ slots:
     type: categorical
     influence_conversation: true
     values:
-      - Doctor
-      - Patiant
+      - doctor
+      - patient
     mappings:
       - type: from_entity
         entity: searchFor
-  
+
   searchType:
     type: categorical
     influence_conversation: true
@@ -64,14 +64,13 @@ slots:
     mappings:
       - type: from_entity
         entity: searchType
-  
+
   searchValue:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
         entity: searchValue
-  
 
 actions:
   - action_last_match
@@ -84,13 +83,13 @@ forms:
     required_slots:
       - type
       - team
-  
+
   search_form:
     required_slots:
       - searchFor
       - searchType
       - searchValue
-  
+
 responses:
   utter_greet:
     - text: "Hey! How are you?"
@@ -145,7 +144,7 @@ responses:
   utter_hakeem_logo3:
     - text: "One more version of Hakeem logo"
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN1__obHMWCXmzsqzV6LCuFmcETH-IZ8Z3xzVGnDZr9CkBup2nLRcDawrZXVrYxTbNKlo&usqp=CAU"
-      
+
   utter_ask_searchFor:
     - text: Do you want search for Patient or Doctor?
       buttons:
