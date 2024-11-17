@@ -1,30 +1,6 @@
 version: "3.1"
 
 nlu:
-  - intent: next_match
-    examples: |
-      - When is the [next](type) game for [Chelsea](team)?
-      - Who is [Manchester City](team) playing [next](type)?
-      - What’s the [next](type) fixture for [Tottenham Hotspur](team)?
-      - [next](type) game for [Bayern Munich](team)?
-      - Who’s [Arsenal](team) facing in their [next](type) match?
-      - When will [Liverpool](team) play again?
-      - Tell me the [next](type) match details for [Manchester United](team)
-      - Show me the upcoming schedule for [Barcelona](team)
-      - When is [Paris Saint-Germain](team) scheduled to play?
-
-  - intent: last_match
-    examples: |
-      - What was the [last](type) match result for [Chelsea](team)?
-      - Tell me about the previous game for [Aston Villa](team)
-      - Who did [Manchester City](team) play [last](type)?
-      - Show me the [last](type) game result for [Liverpool](team)
-      - How did [Juventus](team) perform in their [last](type) match?
-      - Result of the previous match for [Real Madrid](team)
-      - How did [Barcelona](team) do in their [last](type) game?
-      - Who did [Arsenal](team) face in their [last](type) match?
-      - What happened in [Bayern Munich](team)'s previous match?
-
   - intent: greet
     examples: |
       - hey
@@ -140,8 +116,30 @@ nlu:
       - i want to ask about match
       - i need result
 
-  - intent: hakeem_logo
+  - intent: next_match
     examples: |
-      - give me hakeem_logo
-      - hakeem_logo
-      - i need hakeem_logo
+      - When is the [next](type) game for [Chelsea](team)?
+      - Who is [Manchester City](team) playing [next](type)?
+      - What’s the [next](type) fixture for [Tottenham Hotspur](team)?
+      - [next](type) game for [Bayern Munich](team)?
+      - Who’s [Arsenal](team) facing in their [next](type) match?
+      - When will [Liverpool](team) play again?
+      - Tell me the [next](type) match details for [Manchester United](team)
+      - Show me the upcoming schedule for [Barcelona](team)
+      - When is [Paris Saint-Germain](team) scheduled to play?
+
+  - intent: last_match
+    examples: |
+      - What was the [last](type) match result for [Chelsea](team)?
+      - Tell me about the previous game for [Aston Villa](team)
+      - Who did [Manchester City](team) play [last](type)?
+      - Show me the [last](type) game result for [Liverpool](team)
+      - How did [Juventus](team) perform in their [last](type) match?
+      - Result of the previous match for [Real Madrid](team)
+      - How did [Barcelona](team) do in their [last](type) game?
+      - Who did [Arsenal](team) face in their [last](type) match?
+      - What happened in [Bayern Munich](team)'s previous match?
+
+  - intent: welcome
+    examples: |
+      - welcome

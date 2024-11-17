@@ -92,10 +92,6 @@ responses:
   utter_help:
     - text: this bot is to help you to get the next or last match for a team.
 
-  utter_hakeem_logo:
-    - text: "Here is hakeem logo"
-      image: "https://ehs.com.jo/sites/default/files/2024-10/Hakeem%20Logo-01.jpg"
-
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
