@@ -35,6 +35,40 @@ $this->title = "Scores";
 
     <!-- Matches Container -->
     <div id="allMatches" class="row g-4"></div>
+
+    <div class="container">
+        <div class="widget">
+
+            <div class="chat_header">
+                <!--Add the name of the bot here -->
+                <span class="chat_header_title">Restobot</span>
+                <span id="close">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </span>
+
+            </div>
+            <!--Chatbot contents goes here -->
+            <div class="chats" id="chats">
+                <div class="clearfix"></div>
+
+
+            </div>
+            <!--user typing indicator -->
+            <div class="keypad">
+
+                <textarea id="userInput" placeholder="Type a message..." class="usrInput"></textarea>
+
+                <div id="sendButton"><i class="fa fa-paper-plane" aria-hidden="true"></i></div>
+            </div>
+        </div>
+        <!--bot widget -->
+        <div class="profile_div" id="profile_div">
+            <img class="imgProfile" src="<?= Yii::getAlias('@web') ?>/images/botAvatar.png" />
+        </div>
+    </div>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </div>
 
 <!--  Local Storage for Date -->

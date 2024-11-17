@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -21,8 +22,13 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/materialize.min.css',
+        'css/style.css'
     ];
     public $js = [
+        'js/jquery.min.js',
+        'js/materialize.min.js',
+        'js/script.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
