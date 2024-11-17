@@ -8,3 +8,9 @@ gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; php server/index.ph
 
 export TITLE="Client"
 gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; php client/yii serve; exec bash"
+
+export TITLE="Rasa api"
+gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; cd chatbot; source venv/bin/activate; rasa run actions; exec bash"
+
+export TITLE="Rasa action server"
+gnome-terminal -- bash -c "echo -ne \"\033]0;${TITLE}\007\"; cd chatbot; source venv/bin/activate; rasa run -m models --enable-api --cors "*" --debug; exec bash"

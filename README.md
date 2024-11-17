@@ -45,6 +45,14 @@ Scoraper is a real-time sports score tracking app that uses web scraping to pull
     npm install
     ```
 
+8. Set Up a Virtual Environment and install Dependencies:
+    ```bash
+    cd chatbot
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
+
 7. Start all application using shell script:
     ```bash
     ./start.sh
