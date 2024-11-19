@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 	//if you want the bot to start the conversation
 	// action_trigger();
+	send("welcome")
 	
 })
 

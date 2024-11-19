@@ -13,7 +13,7 @@ intents:
   - match_type
   - help_match
   - help
-  - hakeem_logo
+  - welcome
 
 entities:
   - team
@@ -68,15 +68,6 @@ responses:
 
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
-
-  utter_next_match:
-    - text: "next match"
-
-  utter_last_match:
-    - text: "last match"
-
-  utter_out_of_scope:
-    - text: Sorry, I can't handle that request.
 
   utter_ask_type:
     - text: choose one
